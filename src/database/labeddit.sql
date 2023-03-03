@@ -50,6 +50,8 @@ CREATE TABLE comments_post(
     content TEXT NOT NULL,
     likes INTEGER DEFAULT(0) NOT NULL,
     dislikes INTEGER DEFAULT(0) NOT NULL,
+    created_at TEXT DEFAULT(DATETIME()) NOT NULL,
+    updated_at TEXT DEFAULT(DATETIME()) NOT NULL,
     FOREIGN KEY (post_id) REFERENCES posts(id)
         ON DELETE CASCADE 
         ON UPDATE CASCADE,
@@ -63,6 +65,8 @@ VALUES
     ("c001", "p001", "u003", "Que praia? To dentro!"),
     ("c002", "p002", "u001", "Demais migooo! Saudades!"),
     ("c003", "p003", "u002", "Somos dois! Bora sair pra descansar a cabeça!");
+
+DROP TABLE comments_post;
 
 CREATE TABLE likes_dislikes_posts(
     user_id TEXT NOT NULL,

@@ -102,7 +102,7 @@ export class CommentsDatabase extends BaseDatabase {
         .select()
         .where({
             user_id: likeDislikeToFind.user_id,
-            comment_id: likeDislikeToFind.comment_id
+            comment_id: likeDislikeToFind.comments_id
         })
 
         if(likeDislikeDB){
