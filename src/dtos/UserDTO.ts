@@ -1,3 +1,4 @@
+
 export interface SignupInputDTO {
     nickname: unknown,
     email: unknown,
@@ -16,3 +17,4 @@ export interface LoginInputDTO {
 export interface LoginOutputDTO {
     token: string
 }
+

@@ -8,6 +8,7 @@ export class UserController {
         private userBusiness: UserBusiness
     ) { }
 
+ 
     public signup = async (req: Request, res: Response) => {
 
         try {

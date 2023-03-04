@@ -78,7 +78,7 @@ export enum POST_LIKE{
 
 export interface UserDB {
     id: string,
-    name: string,
+    nickname: string,
     email: string,
     password: string,
     role: USER_ROLES,
@@ -87,7 +87,7 @@ export interface UserDB {
 
 export interface UserModel {
     id: string,
-    name: string,
+    nickname: string,
     email: string,
     password: string,
     role: USER_ROLES,
@@ -96,6 +96,6 @@ export interface UserModel {
 
 export interface TokenPayload {
     id: string,
-    name: string,
+    nickname: string,
     role: USER_ROLES
 }

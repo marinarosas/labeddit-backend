@@ -8,16 +8,12 @@ CREATE TABLE users(
     role TEXT NOT NULL,
     created_at TEXT DEFAULT (DATETIME()) NOT NULL
 );
-
-SELECT * FROM users;
-
-DROP TABLE users;
-
 INSERT INTO users (id, nickname, email, password, role)
 VALUES
     ("u001", "Marina", "marina@email.com", "M@rina123", "ADMIN"),
     ("u002", "Alex", "alex@email.com", "@Lex1234", "NORMAL"),
     ("u003", "Andrea", "andrea@email.com", "Andre@123", "NORMAL");
+
 
 CREATE TABLE posts(
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
@@ -32,11 +28,6 @@ CREATE TABLE posts(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-
-SELECT * FROM posts;
-
-DROP TABLE posts;
-
 INSERT INTO posts (id, creator_id, content)
 VALUES
     ("p001", "u001", "Bora pra praia?!"),
@@ -59,14 +50,11 @@ CREATE TABLE comments_post(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-
 INSERT INTO comments_post (id, post_id, user_id, content)
 VALUES
     ("c001", "p001", "u003", "Que praia? To dentro!"),
     ("c002", "p002", "u001", "Demais migooo! Saudades!"),
     ("c003", "p003", "u002", "Somos dois! Bora sair pra descansar a cabeça!");
-
-DROP TABLE comments_post;
 
 CREATE TABLE likes_dislikes_posts(
     user_id TEXT NOT NULL,
@@ -79,31 +67,6 @@ CREATE TABLE likes_dislikes_posts(
         ON DELETE CASCADE
         ON UPDATE CASCADE 
 );
-
-SELECT * FROM likes_dislikes;
-
-DROP TABLE likes_dislikes;
-
-INSERT INTO likes_dislikes (user_id, post_id, like)
-VALUES
-    ("u001", "p001", 397),
-    ("u001", "p002", 269),
-    ("u002", "p003", 35);
-
-CREATE TABLE posts_comments(
-    post_id TEXT NOT NULL,
-    user_id TEXT NOT NULL,
-    comment INTEGER NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES posts(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
-
-DROP TABLE posts_comments;
-
 CREATE TABLE likes_dislikes_comments(
     user_id TEXT NOT NULL,
     comment_id TEXT NOT NULL,
@@ -114,6 +77,17 @@ CREATE TABLE likes_dislikes_comments(
     FOREIGN KEY (comment_id) REFERENCES comments_post(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE 
+);
+CREATE TABLE posts_comments(
+    post_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    comment INTEGER NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 SELECT 
@@ -137,3 +111,17 @@ UPDATE users
 SET password = "$2a$12$ZLXrqt.6dqrzRnpba.u8zu.S97F0V8TLVLYeU1jaBIRFNr2jCdVLu"
 WHERE id = "u002";
 
+SELECT * FROM users;
+SELECT * FROM posts;
+SELECT * FROM comments_post;
+SELECT * FROM likes_dislikes_posts;
+SELECT * FROM likes_dislikes_comments;
+SELECT * FROM posts_comments;
+
+
+DROP TABLE users;
+DROP TABLE posts;
+DROP TABLE comments_post;
+DROP TABLE likes_dislikes_posts;
+DROP TABLE likes_dislikes_comments;
+DROP TABLE posts_comments;

@@ -82,7 +82,7 @@ export class CommentController {
                 token: req.headers.authorization
             }
 
-            await this.commentBusiness.deletePost(input)
+            await this.commentBusiness.deleteComment(input)
 
             res.status(200).end()
 

@@ -1,4 +1,4 @@
-import { LikeDislikeCommentDB, CommentDB, PostWithCreatorDB, POST_LIKE } from "../types";
+import { LikeDislikeCommentDB, CommentDB, CommentWithCreatorDB, POST_LIKE } from "../types";
 import { BaseDatabase } from "./BaseDatabase";
 
 export class CommentsDatabase extends BaseDatabase {
@@ -51,8 +51,8 @@ export class CommentsDatabase extends BaseDatabase {
             .where({ id })
     }
 
-    public getCommentWithCreator = async (): Promise <PostWithCreatorDB[]> => {
-        const result: PostWithCreatorDB[] = await BaseDatabase
+    public getCommentWithCreator = async (): Promise <CommentWithCreatorDB[]> => {
+        const result: CommentWithCreatorDB[] = await BaseDatabase
             .connection(CommentsDatabase.TABLE_COMMENTS_POST)
             .select(
                 "posts.id",
@@ -70,8 +70,8 @@ export class CommentsDatabase extends BaseDatabase {
         return result
     } //?????
 
-    public findCommentWithCreatorById = async (postId: string): Promise <PostWithCreatorDB | undefined> => {
-        const result: PostWithCreatorDB[] = await BaseDatabase
+    public findCommentWithCreatorById = async (commentId: string): Promise <CommentWithCreatorDB | undefined> => {
+        const result: CommentWithCreatorDB[] = await BaseDatabase
             .connection(CommentsDatabase.TABLE_COMMENTS_POST)
             .select(
                 "posts.id",
@@ -85,7 +85,7 @@ export class CommentsDatabase extends BaseDatabase {
 
             )
             .join("users", "posts.creator_id", "=", "users.id")
-            .where("posts.id", postId)
+            .where("posts.id", commentId)
 
         return result[0]
     } //?????
@@ -102,7 +102,7 @@ export class CommentsDatabase extends BaseDatabase {
         .select()
         .where({
             user_id: likeDislikeToFind.user_id,
-            comment_id: likeDislikeToFind.comments_id
+            comment_id: likeDislikeToFind.comment_id
         })
 
         if(likeDislikeDB){

@@ -55,7 +55,7 @@ export class CommentBusiness {
 
         const output: GetCommentOutputDTO = comments
         return output
-    }
+    } //MUDAR PARA PEGAR ALL DE UM POST
 
     public createComment = async (input: CreateCommentInputDTO): Promise<void> => {
 
@@ -82,7 +82,7 @@ export class CommentBusiness {
         const id = this.idGenerator.generate()
         const postId = payload.id // ISSO DAQUI TA ERRADO
         const userId = payload.id
-        const creatorName = payload.name
+        const creatorName = payload.nickname
         let newLikes = 0
         let newDislikes = 0
 
@@ -137,7 +137,7 @@ export class CommentBusiness {
             throw new BadRequestError("somente quem criou o post pode editá-la")
         }
 
-        const creatorName = payload.name
+        const creatorName = payload.nickname
 
         const newPost = new Comment(
             commentDB.id,
@@ -281,8 +281,6 @@ export class CommentBusiness {
             await this.commentsDatabase.likeOrDislikeComment(likeDislikeCommentDB)
 
             like ? comment.addLike() : comment.addDislike()
-
-            console.log(like, "LIKEEEEEEEEEEEEEEE ELSEEEEEEEEEEEEEEEE")
 
         }
 

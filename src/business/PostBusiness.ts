@@ -81,7 +81,7 @@ export class PostBusiness {
         const id = this.idGenerator.generate()
 
         const creatorId = payload.id
-        const creatorName = payload.name
+        const creatorName = payload.nickname
         let newLikes = 0
         let newDislikes = 0
 
@@ -135,7 +135,7 @@ export class PostBusiness {
             throw new BadRequestError("somente quem criou o post pode editá-la")
         }
 
-        const creatorName = payload.name
+        const creatorName = payload.nickname
 
         const newPost = new Post(
             postDB.id,
@@ -252,12 +252,9 @@ export class PostBusiness {
 
         const likeDislikeExist = await this.postsDatabase
             .findLikeDislike(likeDislikePostDB)
-
-            console.log(likeDislikeExist, "OIIIIIIIIII")
-        
         
         if (likeDislikeExist === POST_LIKE.ALREADY_LIKED) {
-            console.log("ENTROUUUUUUU NO IFFFF")
+
             if (like) {
                 await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
                 post.removeLike()
@@ -281,13 +278,9 @@ export class PostBusiness {
 
             like ? post.addLike() : post.addDislike()
 
-            console.log(like, "LIKEEEEEEEEEEEEEEE ELSEEEEEEEEEEEEEEEE")
-
         }
 
         const updatePostDB = post.toDBModel()
-
-        console.log(updatePostDB, "AQUIIIIII")
 
         await this.postsDatabase.updatePostById(idToLikeDislike, updatePostDB)
     }

@@ -1,12 +1,12 @@
 import express from 'express'
-import { PostBusiness } from '../business/PostBusiness'
-import { PostController } from '../controller/PostController'
+import { CommentBusiness } from '../business/CommentBusiness'
+import { CommentController } from '../controller/CommentController'
 import { CommentsDatabase } from '../database/CommentsDataBase'
 import { UsersDatabase } from '../database/UsersDatabase'
 import { IdGenerator } from '../services/IdGenerator'
 import { TokenManager } from '../services/TokenManager'
 
-export const postRouter = express.Router()
+export const commentRouter = express.Router()
 
 const postController = new CommentController(
     new CommentBusiness(
@@ -17,8 +17,8 @@ const postController = new CommentController(
     )
 )
 
-postRouter.get("/", postController.getComments)
-postRouter.post("/", postController.createComment)
-postRouter.put("/:id", postController.editComment)
-postRouter.delete("/:id", postController.deleteComment)
-postRouter.put("/:id/like", postController.likeOrDislikeComment)
+commentRouter.get("/", postController.getComments)
+commentRouter.post("/", postController.createComment)
+commentRouter.put("/:id", postController.editComment)
+commentRouter.delete("/:id", postController.deleteComment)
+commentRouter.put("/:id/like", postController.likeOrDislikeComment)

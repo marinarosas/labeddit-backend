@@ -17,35 +17,10 @@ export class UserBusiness {
         private hashManager: HashManager
     ) { }
 
-    // public getUsers = async (input: GetUsersInput): Promise<GetUsersOutput> => {
-    //     const { q } = input
-
-    //     if (typeof q !== "string" && q !== undefined) {
-    //         throw new BadRequestError("'q' deve ser string ou undefined")
-    //     }
-
-    //     const userDB = await this.usersDatabase.findUsers(q)
-
-    //     const users = userDB.map((userDB) => {
-    //         const user = new User(
-    //             userDB.id,
-    //             userDB.name,
-    //             userDB.email,
-    //             userDB.password,
-    //             userDB.role,
-    //             userDB.created_at
-    //         )
-
-    //         return user.toBusinessModel()
-    //     })
-
-    //     const output: GetUsersOutput = users
-
-    //     return output
-    // }
 
     public signup = async (input: SignupInputDTO): Promise<SignupOutputDTO> => {
         const { nickname, email, password } = input
+        console.log("ENTRA AQUI?")
 
         if (typeof nickname !== "string") {
             throw new BadRequestError("'name' deve ser string")
@@ -67,6 +42,9 @@ export class UserBusiness {
             throw new BadRequestError("'password' deve possuir entre 8 e 12 caracteres, com letras maiúsculas e minúsculas e no mínimo um número e um caractere especial")
         }
 
+        console.log("E AQUIIIIII");
+        
+
         const hashPassword = await this.hashManager.hash(password)
 
         const newUser = new User(
@@ -79,11 +57,13 @@ export class UserBusiness {
         )
 
         const newUserDB = newUser.toDBModel()
+        console.log(newUserDB);
+        
         await this.usersDatabase.insertUser(newUserDB)
 
         const tokenPayload: TokenPayload = {
             id: newUser.getId(),
-            name: newUser.getName(),
+            nickname: newUser.getNickName(),
             role: newUser.getRole()
         }
         const token = this.tokenManager.createToken(tokenPayload)
@@ -114,7 +94,7 @@ export class UserBusiness {
 
         const user = new User(
             userDB.id,
-            userDB.name,
+            userDB.nickname,
             userDB.email,
             userDB.password,
             userDB.role,
@@ -129,7 +109,7 @@ export class UserBusiness {
 
         const tokenPayload: TokenPayload = {
             id: user.getId(),
-            name: user.getName(),
+            nickname: user.getNickName(),
             role: user.getRole()
         }
 
