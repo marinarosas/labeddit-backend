@@ -51,44 +51,44 @@ export class CommentsDatabase extends BaseDatabase {
             .where({ id })
     }
 
-    // public getCommentWithCreator = async (): Promise <PostWithCreatorDB[]> => {
-    //     const result: PostWithCreatorDB[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_COMMENTS_POST)
-    //         .select(
-    //             "posts.id",
-    //             "posts.creator_id",
-    //             "posts.content",
-    //             "posts.likes",
-    //             "posts.dislikes",
-    //             "posts.created_at",
-    //             "posts.updated_at",
-    //             "users.name AS creator_name"
+    public getCommentWithCreator = async (): Promise <PostWithCreatorDB[]> => {
+        const result: PostWithCreatorDB[] = await BaseDatabase
+            .connection(CommentsDatabase.TABLE_COMMENTS_POST)
+            .select(
+                "posts.id",
+                "posts.creator_id",
+                "posts.content",
+                "posts.likes",
+                "posts.dislikes",
+                "posts.created_at",
+                "posts.updated_at",
+                "users.name AS creator_name"
 
-    //         )
-    //         .join("users", "posts.creator_id", "=", "users.id")
+            )
+            .join("users", "posts.creator_id", "=", "users.id")
 
-    //     return result
-    // }
+        return result
+    } //?????
 
-    // public findCommentWithCreatorById = async (postId: string): Promise <PostWithCreatorDB | undefined> => {
-    //     const result: PostWithCreatorDB[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_COMMENTS_POST)
-    //         .select(
-    //             "posts.id",
-    //             "posts.creator_id",
-    //             "posts.content",
-    //             "posts.likes",
-    //             "posts.dislikes",
-    //             "posts.created_at",
-    //             "posts.updated_at",
-    //             "users.name AS creator_name"
+    public findCommentWithCreatorById = async (postId: string): Promise <PostWithCreatorDB | undefined> => {
+        const result: PostWithCreatorDB[] = await BaseDatabase
+            .connection(CommentsDatabase.TABLE_COMMENTS_POST)
+            .select(
+                "posts.id",
+                "posts.creator_id",
+                "posts.content",
+                "posts.likes",
+                "posts.dislikes",
+                "posts.created_at",
+                "posts.updated_at",
+                "users.name AS creator_name"
 
-    //         )
-    //         .join("users", "posts.creator_id", "=", "users.id")
-    //         .where("posts.id", postId)
+            )
+            .join("users", "posts.creator_id", "=", "users.id")
+            .where("posts.id", postId)
 
-    //     return result[0]
-    // }
+        return result[0]
+    } //?????
 
     public likeOrDislikeComment = async (likeDislike: LikeDislikeCommentDB): Promise <void> =>{
         await BaseDatabase
