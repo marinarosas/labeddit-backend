@@ -1,292 +1,302 @@
-import { CommentsDatabase } from "../database/CommentsDataBase"
-import { UsersDatabase } from "../database/UsersDatabase"
-import { LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
-import { CreateCommentInputDTO, DeleteCommentInputDTO, EditCommentInputDTO, GetCommentInputDTO, GetCommentOutputDTO } from "../dtos/CommentDTO"
-import { BadRequestError } from "../errors/BadRequestError"
-import { NotFoundError } from "../errors/NotFoundError"
-import { Comment } from "../models/Comment"
-import { IdGenerator } from "../services/IdGenerator"
-import { TokenManager } from "../services/TokenManager"
-import { LikeDislikeCommentDB, CommentWithCreatorDB, POST_LIKE, USER_ROLES } from "../types"
-
-export class CommentBusiness {
-    constructor(
-        private commentsDatabase: CommentsDatabase,
-        private idGenerator: IdGenerator,
-        private usersDatabase: UsersDatabase,
-        private tokenManager: TokenManager
-    ) { }
-
-    public getComments = async (input: GetCommentInputDTO): Promise<GetCommentOutputDTO> => {
-
-        const { token } = input
-
-        if (token === undefined) {
-            throw new BadRequestError("'token' ausente")
-        }
-
-        const payload = this.tokenManager.getPayload(token)
+// import { CommentsDatabase } from "../database/CommentsDataBase"
+// import { UsersDatabase } from "../database/UsersDatabase"
+// import { LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
+// import { CreateCommentInputDTO, DeleteCommentInputDTO, EditCommentInputDTO, GetCommentInputDTO, GetCommentOutputDTO } from "../dtos/CommentDTO"
+// import { BadRequestError } from "../errors/BadRequestError"
+// import { NotFoundError } from "../errors/NotFoundError"
+// import { Comment } from "../models/Comment"
+// import { IdGenerator } from "../services/IdGenerator"
+// import { TokenManager } from "../services/TokenManager"
+// import { LikeDislikeCommentDB, CommentWithCreatorDB, POST_LIKE, USER_ROLES } from "../types"
+
+// export class CommentBusiness {
+//     constructor(
+//         private commentsDatabase: CommentsDatabase,
+//         private idGenerator: IdGenerator,
+//         private usersDatabase: UsersDatabase,
+//         private tokenManager: TokenManager
+//     ) { }
+
+//     public getComments = async (input: GetCommentInputDTO): Promise<GetCommentOutputDTO> => {
+
+//         const { token } = input
+
+//         if (token === undefined) {
+//             throw new BadRequestError("'token' ausente")
+//         }
+
+//         const payload = this.tokenManager.getPayload(token)
+
+//         if (payload === null) {
+//             throw new BadRequestError("'token'inválido")
+//         }
+
+//         const commentsWithCreatorDB: CommentWithCreatorDB[] = await this.commentsDatabase.getCommentWithCreator()
+
+
+//         const comments = commentsWithCreatorDB.map((commentWithCreatorDB) => {
+//             const comment = new Comment(
+//                 commentWithCreatorDB.id,
+//                 commentWithCreatorDB.post_id,
+//                 commentWithCreatorDB.content,
+//                 commentWithCreatorDB.likes,
+//                 commentWithCreatorDB.dislikes,
+//                 commentWithCreatorDB.created_at,
+//                 commentWithCreatorDB.updated_at,
+//                 commentWithCreatorDB.creator_id,
+//                 commentWithCreatorDB.creator_nickname
+//             )
+
+//             private id: string,
+//             private postId: string,
+//             private content: string,
+//             private likes: number,
+//             private dislikes: number,
+//             private createdAt: string,
+//             private updatedAt: string,
+//             private userId: string,
+//             private creatorNickname: string
+
+
+//             return comment.toBusinessModel()
+
+//         }
+//         )
+
+//         const output: GetCommentOutputDTO = comments
+//         return output
+//     } //MUDAR PARA PEGAR ALL DE UM POST
+
+//     public createComment = async (input: CreateCommentInputDTO): Promise<void> => {
+
+//         const { content, token } = input
+
+//         if (token === undefined) {
+//             throw new BadRequestError("'token' ausente")
+//         }
 
-        if (payload === null) {
-            throw new BadRequestError("'token'inválido")
-        }
+//         if (typeof token !== "string") {
+//             throw new BadRequestError("'token' deve ser uma string")
+//         }
 
-        const commentsWithCreatorDB: CommentWithCreatorDB[] = await this.commentsDatabase.getCommentWithCreator()
+//         if (token === null) {
+//             throw new BadRequestError("'token' deve ser informado")
+//         }
 
+//         const payload = this.tokenManager.getPayload(token)
+
+//         if (payload === null) {
+//             throw new BadRequestError("token não é valido")
+//         }
 
-        const comments = commentsWithCreatorDB.map((commentWithCreatorDB) => {
-            const comment = new Comment(
-                commentWithCreatorDB.id,
-                commentWithCreatorDB.post_id,
-                commentWithCreatorDB.content,
-                commentWithCreatorDB.likes,
-                commentWithCreatorDB.dislikes,
-                commentWithCreatorDB.created_at,
-                commentWithCreatorDB.updated_at,
-                commentWithCreatorDB.user_id,
-                commentWithCreatorDB.creator_name
+//         const id = this.idGenerator.generate()
+//         const postId = payload.id // ISSO DAQUI TA ERRADO
+//         const userId = payload.id
+//         const creatorName = payload.nickname
+//         let newLikes = 0
+//         let newDislikes = 0
 
-            )
-
-            return comment.toBusinessModel()
-
-        }
-        )
-
-        const output: GetCommentOutputDTO = comments
-        return output
-    } //MUDAR PARA PEGAR ALL DE UM POST
+//         const newComment = new Comment(
+//             id,
+//             postId,
+//             content,
+//             newLikes,
+//             newDislikes,
+//             new Date().toISOString(),
+//             new Date().toISOString(),
+//             userId,
+//             creatorName
+//         )
 
-    public createComment = async (input: CreateCommentInputDTO): Promise<void> => {
+//         const newCommentDB = newComment.toDBModel()
 
-        const { content, tokenUser } = input
+//         await this.commentsDatabase.insertComment(newCommentDB)
+//     }
 
-        if (tokenUser === undefined) {
-            throw new BadRequestError("'token' ausente")
-        }
+//     public editComment = async (input: EditCommentInputDTO): Promise<void> => {
 
-        if (typeof tokenUser !== "string") {
-            throw new BadRequestError("'token' deve ser uma string")
-        }
+//         const { idToEdit, content, token } = input
 
-        if (tokenUser === null) {
-            throw new BadRequestError("'token' deve ser informado")
-        }
+//         if (token === undefined) {
+//             throw new BadRequestError("'token' ausente")
+//         }
 
-        const payload = this.tokenManager.getPayload(tokenUser)
+//         if (typeof token !== "string") {
+//             throw new BadRequestError("'token' deve ser uma string")
+//         }
 
-        if (payload === null) {
-            throw new BadRequestError("token não é valido")
-        }
+//         if (token === null) {
+//             throw new BadRequestError("'token' deve ser informado")
+//         }
 
-        const id = this.idGenerator.generate()
-        const postId = payload.id // ISSO DAQUI TA ERRADO
-        const userId = payload.id
-        const creatorName = payload.nickname
-        let newLikes = 0
-        let newDislikes = 0
+//         const commentDB = await this.commentsDatabase.getCommentById(idToEdit)
 
-        const newComment = new Comment(
-            id,
-            postId,
-            content,
-            newLikes,
-            newDislikes,
-            new Date().toISOString(),
-            new Date().toISOString(),
-            userId,
-            creatorName
-        )
+//         if (!commentDB) {
+//             throw new NotFoundError("'id' não encontrado")
+//         }
 
-        const newCommentDB = newComment.toDBModel()
+//         const payload = this.tokenManager.getPayload(token)
 
-        await this.commentsDatabase.insertComment(newCommentDB)
-    }
+//         if (payload === null) {
+//             throw new BadRequestError("token não é valido")
+//         }
 
-    public editComment = async (input: EditCommentInputDTO): Promise<void> => {
+//         const userId = payload.id
 
-        const { idToEdit, content, token } = input
+//         if (commentDB.user_id !== userId) {
+//             throw new BadRequestError("somente quem criou o post pode editá-la")
+//         }
 
-        if (token === undefined) {
-            throw new BadRequestError("'token' ausente")
-        }
+//         const creatorName = payload.nickname
 
-        if (typeof token !== "string") {
-            throw new BadRequestError("'token' deve ser uma string")
-        }
+//         const newPost = new Comment(
+//             commentDB.id,
+//             commentDB.post_id,
+//             commentDB.content,
+//             commentDB.likes,
+//             commentDB.dislikes,
+//             commentDB.created_at,
+//             commentDB.updated_at,
+//             userId,
+//             creatorName
+//         )
 
-        if (token === null) {
-            throw new BadRequestError("'token' deve ser informado")
-        }
+//         newPost.setContent(content)
+//         newPost.setUpdatedAt(new Date().toISOString())
 
-        const commentDB = await this.commentsDatabase.findCommentById(idToEdit)
+//         const newCommentDB = newPost.toDBModel()
 
-        if (!commentDB) {
-            throw new NotFoundError("'id' não encontrado")
-        }
+//         await this.commentsDatabase.updateCommentById(idToEdit, newCommentDB)
+//     }
 
-        const payload = this.tokenManager.getPayload(token)
+//     public deleteComment = async (input: DeleteCommentInputDTO): Promise<void> => {
 
-        if (payload === null) {
-            throw new BadRequestError("token não é valido")
-        }
+//         const { idToDelete, token } = input
 
-        const userId = payload.id
+//         if (token === undefined) {
+//             throw new BadRequestError("'token' ausente")
+//         }
 
-        if (commentDB.user_id !== userId) {
-            throw new BadRequestError("somente quem criou o post pode editá-la")
-        }
+//         if (typeof token !== "string") {
+//             throw new BadRequestError("'token' deve ser uma string")
+//         }
 
-        const creatorName = payload.nickname
+//         if (token === null) {
+//             throw new BadRequestError("'token' deve ser informado")
+//         }
 
-        const newPost = new Comment(
-            commentDB.id,
-            commentDB.post_id,
-            commentDB.content,
-            commentDB.likes,
-            commentDB.dislikes,
-            commentDB.created_at,
-            commentDB.updated_at,
-            userId,
-            creatorName
-        )
+//         const payload = this.tokenManager.getPayload(token)
 
-        newPost.setContent(content)
-        newPost.setUpdatedAt(new Date().toISOString())
+//         if (payload === null) {
+//             throw new BadRequestError("token não é valido")
+//         }
 
-        const newCommentDB = newPost.toDBModel()
+//         const commentDB = await this.commentsDatabase.getCommentById(idToDelete)
 
-        await this.commentsDatabase.updateCommentById(idToEdit, newCommentDB)
-    }
+//         if (!commentDB) {
 
-    public deleteComment = async (input: DeleteCommentInputDTO): Promise<void> => {
+//             throw new NotFoundError("Id não encontrado")
+//         }
 
-        const { idToDelete, token } = input
+//         const userId = payload.id
 
-        if (token === undefined) {
-            throw new BadRequestError("'token' ausente")
-        }
+//         if (
+//             payload.role !== USER_ROLES.ADMIN &&
+//             commentDB.user_id !== userId) {
+//             throw new BadRequestError("somente quem criou o post pode deletá-la")
+//         }
 
-        if (typeof token !== "string") {
-            throw new BadRequestError("'token' deve ser uma string")
-        }
+//         await this.commentsDatabase.deleteCommentById(idToDelete)
 
-        if (token === null) {
-            throw new BadRequestError("'token' deve ser informado")
-        }
+//     }
 
-        const payload = this.tokenManager.getPayload(token)
+//     public likeOrDislikeComment = async (input: LikesDislikesInputDTO): Promise<void> => {
 
-        if (payload === null) {
-            throw new BadRequestError("token não é valido")
-        }
+//         const { idToLikeDislike, token, like } = input
 
-        const commentDB = await this.commentsDatabase.findCommentById(idToDelete)
+//         if (token === undefined) {
+//             throw new BadRequestError("'token' ausente")
+//         }
 
-        if (!commentDB) {
+//         if (typeof token !== "string") {
+//             throw new BadRequestError("'token' deve ser uma string")
+//         }
 
-            throw new NotFoundError("Id não encontrado")
-        }
+//         if (token === null) {
+//             throw new BadRequestError("'token' deve ser informado")
+//         }
 
-        const userId = payload.id
+//         const payload = this.tokenManager.getPayload(token)
 
-        if (
-            payload.role !== USER_ROLES.ADMIN &&
-            commentDB.user_id !== userId) {
-            throw new BadRequestError("somente quem criou o post pode deletá-la")
-        }
+//         if (payload === null) {
+//             throw new BadRequestError("token não é valido")
+//         }
 
-        await this.commentsDatabase.deleteCommentById(idToDelete)
+//         if (typeof like !== "boolean") {
+//             throw new BadRequestError("'like' deve ser um booleano")
+//         }
 
-    }
+//         const commentWithCreatorDB = await this.commentsDatabase.getCommentWithCreatorById(idToLikeDislike)
 
-    public likeOrDislikeComment = async (input: LikesDislikesInputDTO): Promise<void> => {
 
-        const { idToLikeDislike, token, like } = input
+//         if (!commentWithCreatorDB) {
+//             throw new NotFoundError("Id não encontrado")
+//         }
 
-        if (token === undefined) {
-            throw new BadRequestError("'token' ausente")
-        }
+//         const userId = payload.id
+//         const likeSQLite = like ? 1 : 0
 
-        if (typeof token !== "string") {
-            throw new BadRequestError("'token' deve ser uma string")
-        }
+//         const likeDislikeCommentDB: LikeDislikeCommentDB = {
+//             user_id: userId,
+//             comment_id: commentWithCreatorDB.id,
+//             like: likeSQLite
+//         }
 
-        if (token === null) {
-            throw new BadRequestError("'token' deve ser informado")
-        }
+//         const comment = new Comment(
+//             commentWithCreatorDB.id,
+//             commentWithCreatorDB.post_id,
+//             commentWithCreatorDB.content,
+//             commentWithCreatorDB.likes,
+//             commentWithCreatorDB.dislikes,
+//             commentWithCreatorDB.created_at,
+//             commentWithCreatorDB.updated_at,
+//             commentWithCreatorDB.user_id,
+//             commentWithCreatorDB.creator_name
+//         )
 
-        const payload = this.tokenManager.getPayload(token)
-
-        if (payload === null) {
-            throw new BadRequestError("token não é valido")
-        }
-
-        if (typeof like !== "boolean") {
-            throw new BadRequestError("'like' deve ser um booleano")
-        }
-
-        const commentWithCreatorDB = await this.commentsDatabase.findCommentWithCreatorById(idToLikeDislike)
-
-
-        if (!commentWithCreatorDB) {
-            throw new NotFoundError("Id não encontrado")
-        }
-
-        const userId = payload.id
-        const likeSQLite = like ? 1 : 0
-
-        const likeDislikeCommentDB: LikeDislikeCommentDB = {
-            user_id: userId,
-            comment_id: commentWithCreatorDB.id,
-            like: likeSQLite
-        }
-
-        const comment = new Comment(
-            commentWithCreatorDB.id,
-            commentWithCreatorDB.post_id,
-            commentWithCreatorDB.content,
-            commentWithCreatorDB.likes,
-            commentWithCreatorDB.dislikes,
-            commentWithCreatorDB.created_at,
-            commentWithCreatorDB.updated_at,
-            commentWithCreatorDB.user_id,
-            commentWithCreatorDB.creator_name
-        )
-
-        const likeDislikeExist = await this.commentsDatabase
-            .findLikeDislike(likeDislikeCommentDB)
+//         const likeDislikeExist = await this.commentsDatabase
+//             .findLikeDislike(likeDislikeCommentDB)
         
-        if (likeDislikeExist === POST_LIKE.ALREADY_LIKED) {
+//         if (likeDislikeExist === POST_LIKE.ALREADY_LIKED) {
 
-            if (like) {
-                await this.commentsDatabase.removeLikeDislike(likeDislikeCommentDB)
-                comment.removeLike()
-            } else {
-                await this.commentsDatabase.updateLikeDislike(likeDislikeCommentDB)
-                comment.removeLike()
-                comment.addDislike()
-            }
-        } else if (likeDislikeExist === POST_LIKE.ALREADY_DISLIKED) {
-            if (like) {
-                await this.commentsDatabase.updateLikeDislike(likeDislikeCommentDB)
-                comment.removeDislike()
-                comment.addLike()
-            } else {
-                await this.commentsDatabase.removeLikeDislike(likeDislikeCommentDB)
-                comment.removeDislike()
-            }
-        } else {
+//             if (like) {
+//                 await this.commentsDatabase.removeLikeDislike(likeDislikeCommentDB)
+//                 comment.removeLike()
+//             } else {
+//                 await this.commentsDatabase.updateLikeDislike(likeDislikeCommentDB)
+//                 comment.removeLike()
+//                 comment.addDislike()
+//             }
+//         } else if (likeDislikeExist === POST_LIKE.ALREADY_DISLIKED) {
+//             if (like) {
+//                 await this.commentsDatabase.updateLikeDislike(likeDislikeCommentDB)
+//                 comment.removeDislike()
+//                 comment.addLike()
+//             } else {
+//                 await this.commentsDatabase.removeLikeDislike(likeDislikeCommentDB)
+//                 comment.removeDislike()
+//             }
+//         } else {
 
-            await this.commentsDatabase.likeOrDislikeComment(likeDislikeCommentDB)
+//             await this.commentsDatabase.likeOrDislikeComment(likeDislikeCommentDB)
 
-            like ? comment.addLike() : comment.addDislike()
+//             like ? comment.addLike() : comment.addDislike()
 
-        }
+//         }
 
-        const updateCommentDB = comment.toDBModel()
+//         const updateCommentDB = comment.toDBModel()
 
-        await this.commentsDatabase.updateCommentById(idToLikeDislike, updateCommentDB)
-    }
+//         await this.commentsDatabase.updateCommentById(idToLikeDislike, updateCommentDB)
+//     }
 
-}
+// }

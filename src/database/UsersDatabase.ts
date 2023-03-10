@@ -6,30 +6,23 @@ export class UsersDatabase extends BaseDatabase{
     public static TABLE_USERS = "users"
     public static TABLE_LIKESDISLIKES = "likes_dislikes"
 
-    public async findUsers (q: string | undefined){
-
-        let usersDB
-
-        if (q) {
-            const result = await BaseDatabase.connection(UsersDatabase.TABLE_USERS).where("content", "LIKE", `%${q}%`)
-            usersDB = result
-        } else {
-            const result = await BaseDatabase.connection(UsersDatabase.TABLE_USERS)
-            usersDB = result
-        }
-
-        return usersDB
+    public async getAllUsers(){
+       return await BaseDatabase.connection(UsersDatabase.TABLE_USERS)
     }
 
-    public async findUserById(id: string | undefined): Promise <UserDB | undefined>{
+    public async getUserByName (q: string){
+        return await BaseDatabase.connection(UsersDatabase.TABLE_USERS).where("content", "LIKE", `%${q}%`)
+    }
+
+    public async getUserById(id: string | undefined): Promise <UserDB | undefined>{
         const [userDBExist]: UserDB[] | undefined[] = await BaseDatabase
         .connection(UsersDatabase.TABLE_USERS)
         .select()
-        .where({id: id})
+        .where({id})
         return userDBExist
     }
 
-    public async findUserByEmail(email: string | undefined): Promise <UserDB | undefined>{
+    public async getUserByEmail(email: string | undefined): Promise <UserDB | undefined>{
         const [emailUserDBExist]: UserDB[] | undefined[] = await BaseDatabase
         .connection (UsersDatabase.TABLE_USERS)
         .select()
@@ -39,7 +32,6 @@ export class UsersDatabase extends BaseDatabase{
 
     public async insertUser(newUserDB: UserDB): Promise <void>{
         await BaseDatabase.connection(UsersDatabase.TABLE_USERS).insert(newUserDB)
-
     }
 
     public async updateUserById(newUserDB: UserDB): Promise <void>{
@@ -50,7 +42,6 @@ export class UsersDatabase extends BaseDatabase{
     }
 
     public async deleteUser(id: string){
-
         await BaseDatabase
         .connection(UsersDatabase.TABLE_LIKESDISLIKES)
         .del()
@@ -62,14 +53,4 @@ export class UsersDatabase extends BaseDatabase{
         .where({id})    
     }
 
-    // public async checkUser (email: string, password: string){
-    //     if(email){
-    //       const userDB: UserDB[] =  await BaseDatabase
-    //     .connection(UsersDatabase.TABLE_USERS)
-    //     .where({email: email, password: password})
-
-    //     return userDB
-
-    //     }
-    // }
 }

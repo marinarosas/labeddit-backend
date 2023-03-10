@@ -20,10 +20,9 @@ export class UserBusiness {
 
     public signup = async (input: SignupInputDTO): Promise<SignupOutputDTO> => {
         const { nickname, email, password } = input
-        console.log("ENTRA AQUI?")
 
         if (typeof nickname !== "string") {
-            throw new BadRequestError("'name' deve ser string")
+            throw new BadRequestError("'nickname' deve ser string")
         }
 
         if (typeof email !== "string") {
@@ -42,17 +41,16 @@ export class UserBusiness {
             throw new BadRequestError("'password' deve possuir entre 8 e 12 caracteres, com letras maiúsculas e minúsculas e no mínimo um número e um caractere especial")
         }
 
-        console.log("E AQUIIIIII");
-        
-
         const hashPassword = await this.hashManager.hash(password)
+        const id = this.idGenerator.generate()
 
         const newUser = new User(
-            this.idGenerator.generate(),
+            id,
             nickname,
             email,
             hashPassword,
             USER_ROLES.NORMAL, // só é possível criar users com contas normais
+            new Date().toISOString(),
             new Date().toISOString()
         )
 
@@ -86,7 +84,7 @@ export class UserBusiness {
             throw new Error("'password' deve ser string")
         }
 
-        const userDB = await this.usersDatabase.findUserByEmail(email)
+        const userDB = await this.usersDatabase.getUserByEmail(email)
 
         if (!userDB) {
             throw new NotFoundError("'email' não encontrado")
@@ -98,7 +96,8 @@ export class UserBusiness {
             userDB.email,
             userDB.password,
             userDB.role,
-            userDB.created_at
+            userDB.created_at,
+            userDB.updated_at
         )
 
         const passwordCompare = await this.hashManager.compare(password, user.getPassword())

@@ -6,7 +6,8 @@ CREATE TABLE users(
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT NOT NULL,
-    created_at TEXT DEFAULT (DATETIME()) NOT NULL
+    created_at TEXT DEFAULT (DATETIME()) NOT NULL,
+    updated_at TEXT DEFAULT(DATETIME()) NOT NULL
 );
 INSERT INTO users (id, nickname, email, password, role)
 VALUES
@@ -34,7 +35,7 @@ VALUES
     ("p002", "u002", "Cansativo o dia!"),
     ("p003", "u003", "Trabalhando muito!");
 
-CREATE TABLE comments_post(
+CREATE TABLE comments(
     id PRIMARY KEY UNIQUE NOT NULL,
     post_id UNIQUE NOT NULL,
     user_id NOt NULL,
@@ -50,7 +51,7 @@ CREATE TABLE comments_post(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-INSERT INTO comments_post (id, post_id, user_id, content)
+INSERT INTO comments (id, post_id, user_id, content)
 VALUES
     ("c001", "p001", "u003", "Que praia? To dentro!"),
     ("c002", "p002", "u001", "Demais migooo! Saudades!"),
@@ -121,7 +122,6 @@ SELECT * FROM posts_comments;
 
 DROP TABLE users;
 DROP TABLE posts;
-DROP TABLE comments_post;
+DROP TABLE comments;
 DROP TABLE likes_dislikes_posts;
 DROP TABLE likes_dislikes_comments;
-DROP TABLE posts_comments;

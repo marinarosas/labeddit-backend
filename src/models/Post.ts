@@ -1,117 +1,133 @@
-import { PostModel, PostDB } from "../types"
+// import { CommentWithCreatorDB, PostDB } from "../types"
+// import {CreateCommentsOutputDTO} from '../dtos/CommentDTO'
+// import { CreatePostOutputDTO } from "../dtos/PostDTO"
 
-export class Post{
-    constructor(
-        private id: string,
-        private content: string,
-        private likes: number,
-        private dislikes: number,
-        private createdAt: string,
-        private updatedAt: string,
-        private creatorId: string,
-        private creatorName: string
-    ){}
+// export class Post{
+//     constructor(
+//         private id: string,
+//         private content: string,
+//         private likes: number,
+//         private dislikes: number,
+//         private creatorId: string,
+//         private creatorNickname: string,
+//         private comments: number,
+//         private createdAt: string,
+//         private updatedAt: string 
+//     ){}
 
-    public getId(): string{
-        return this.id
-    }
+//     public getId(): string{
+//         return this.id
+//     }
 
-    public getContent(): string{
-        return this.content
-    }
+//     public getContent(): string{
+//         return this.content
+//     }
 
-    public setContent(value: string): void{
-        this.content = value
-    }
+//     public setContent(value: string): void{
+//         this.content = value
+//     }
 
-    public getLikes(): number{
-        return this.likes
-    }
+//     public getLikes(): number{
+//         return this.likes
+//     }
 
-    public setLikes(value: number): void{
-        this.likes = value
-    }
+//     public setLikes(value: number): void{
+//         this.likes = value
+//     }
     
-    public addLike(){
-        this.likes += 1
-    }
+//     public addLike(){
+//         this.likes += 1
+//     }
 
-    public removeLike(){
-        this.likes -= 1
-    }
+//     public removeLike(){
+//         this.likes -= 1
+//     }
 
-    public addDislike(){
-        this.dislikes += 1
-    }
+//     public addDislike(){
+//         this.dislikes += 1
+//     }
 
-    public removeDislike(){
-        this.dislikes -= 1
-    }
+//     public removeDislike(){
+//         this.dislikes -= 1
+//     }
 
-    public getDislikes(): number{
-        return this.dislikes
-    }
+//     public getDislikes(): number{
+//         return this.dislikes
+//     }
 
-    public setDislikes(value: number): void{
-        this.dislikes = value
-    }
+//     public setDislikes(value: number): void{
+//         this.dislikes = value
+//     }
 
-    public getCreatedAt(): string{
-        return this.createdAt
-    }
+//     public getCreatedAt(): string{
+//         return this.createdAt
+//     }
 
-    public setCreatedAt(value: string){
-        this.createdAt = value
-    }
+//     public setCreatedAt(value: string){
+//         this.createdAt = value
+//     }
 
-    public getUpdatedAt(): string{
-        return this.updatedAt
-    }
+//     public getUpdatedAt(): string{
+//         return this.updatedAt
+//     }
 
-    public setUpdatedAt(value: string): void{
-        this.updatedAt = value
-    }
+//     public setUpdatedAt(value: string): void{
+//         this.updatedAt = value
+//     }
 
-    public getCreatorId(): string {
-        return this.creatorId
-    }
+//     public getCreatorId(): string {
+//         return this.creatorId
+//     }
 
-    public setCreatorId(value: string): void {
-        this.creatorId = value
-    }
+//     public setCreatorId(value: string): void {
+//         this.creatorId = value
+//     }
 
-    public getCreatorName(): string {
-        return this.creatorName
-    }
+//     public getCreatorNickName(): string {
+//         return this.creatorNickname
+//     }
 
-    public setCreatorName(value: string): void {
-        this.creatorName = value
-    }
+//     public setCreatorNickName(value: string): void {
+//         this.creatorNickname = value
+//     }
 
-    public toDBModel(): PostDB{
-        return{
-            id: this.id,
-            creator_id: this.creatorId,
-            content: this.content,
-            likes: this.likes,
-            dislikes: this.dislikes,
-            created_at: this.createdAt,
-            updated_at: this.updatedAt
-        }
-    }
+//     public getComments(): number{
+//         return this.comments
+//     }
 
-    public toBusinessModel(): PostModel{
-        return{
-            id: this.id,
-            content: this.content,
-            likes: this.likes,
-            dislikes: this.dislikes,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-            creator: {
-                creatorId: this.creatorId,
-                creatorName: this.creatorName
-            }
-        }
-    }
-}
+//     public setComments(value: number){
+//         this.comments = value
+//     }
+
+//     public toDBModel(): PostDB{
+//         return{
+//             id: this.id,
+//             creator_id: this.creatorId,
+//             content: this.content,
+//             likes: this.likes,
+//             dislikes: this.dislikes,
+//             comments: this.comments,
+//             created_at: this.createdAt,
+//             updated_at: this.updatedAt
+//         }
+//     }
+
+//     public toBusinessModel(commentsExt: CommentWithCreatorDB[]): CreatePostOutputDTO{
+//         return {
+//             id: this.id,
+//             content: this.content,
+//             likes: this.likes,
+//             dislikes: this.dislikes,
+//             creator: {
+//                 id: this.creatorId,
+//                 nickname: this.creatorNickname
+//             },
+//             comments:{
+//                 count: this.comments,
+//                 comments: commentsExt
+//             },
+//             createdAt: this.createdAt,
+//             updatedAt: this.updatedAt
+//         }
+//     }
+// }
