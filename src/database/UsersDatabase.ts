@@ -6,7 +6,7 @@ export class UsersDatabase extends BaseDatabase{
     public static TABLE_USERS = "users"
     public static TABLE_LIKESDISLIKES = "likes_dislikes"
 
-    public async getAllUsers(){
+    public async getAllUsers(): Promise<UserDB[]>{
        return await BaseDatabase.connection(UsersDatabase.TABLE_USERS)
     }
 

@@ -4,9 +4,10 @@
   "description": "O Labook é uma rede social com o objetivo de promover a conexão e interação entre pessoas. Quem se cadastrar no aplicativo poderá criar e curtir publicações.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./build/index.js",
     "build": "tsc",
-    "dev": "ts-node-dev ./src/index.ts"
+    "dev": "ts-node-dev ./src/index.ts",
+    "test": "jest"
   },
   "repository": {
     "type": "git",

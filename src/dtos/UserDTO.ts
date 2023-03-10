@@ -1,9 +1,9 @@
 import { BadRequestError } from "../errors/BadRequestError"
 
 export interface SignupInputDTO {
-    nickname: unknown,
-    email: unknown,
-    password: unknown
+    nickname: string,
+    email: string,
+    password: string
 }
 
 export interface SignupOutputDTO {
@@ -11,8 +11,8 @@ export interface SignupOutputDTO {
 }
 
 export interface LoginInputDTO {
-    email: unknown,
-    password: unknown
+    email: string,
+    password: string
 }
 
 export interface LoginOutputDTO {

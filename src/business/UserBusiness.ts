@@ -21,16 +21,12 @@ export class UserBusiness {
     public signup = async (input: SignupInputDTO): Promise<SignupOutputDTO> => {
         const { nickname, email, password } = input
 
-        if (typeof nickname !== "string") {
-            throw new BadRequestError("'nickname' deve ser string")
+        if(nickname.length < 2){
+            throw new BadRequestError("Email deve possuir pelo menos 2")
         }
 
-        if (typeof email !== "string") {
-            throw new BadRequestError("'email' deve ser string")
-        }
-
-        if (typeof password !== "string") {
-            throw new BadRequestError("'password' deve ser string")
+        if(password.length < 8){
+            throw new BadRequestError("'password' tem que ter mais de 8 caracteres")
         }
 
         if (!email.match(regexEmail)) {
@@ -55,7 +51,6 @@ export class UserBusiness {
         )
 
         const newUserDB = newUser.toDBModel()
-        console.log(newUserDB);
         
         await this.usersDatabase.insertUser(newUserDB)
 
