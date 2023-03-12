@@ -17,46 +17,16 @@ export class UserBusiness {
         private hashManager: HashManager
     ) { }
 
-    // public getUsers = async (input: GetUsersInput): Promise<GetUsersOutput> => {
-    //     const { q } = input
-
-    //     if (typeof q !== "string" && q !== undefined) {
-    //         throw new BadRequestError("'q' deve ser string ou undefined")
-    //     }
-
-    //     const userDB = await this.usersDatabase.findUsers(q)
-
-    //     const users = userDB.map((userDB) => {
-    //         const user = new User(
-    //             userDB.id,
-    //             userDB.name,
-    //             userDB.email,
-    //             userDB.password,
-    //             userDB.role,
-    //             userDB.created_at
-    //         )
-
-    //         return user.toBusinessModel()
-    //     })
-
-    //     const output: GetUsersOutput = users
-
-    //     return output
-    // }
 
     public signup = async (input: SignupInputDTO): Promise<SignupOutputDTO> => {
         const { nickname, email, password } = input
 
-        if (typeof nickname !== "string") {
-            throw new BadRequestError("'name' deve ser string")
+        if(nickname.length < 2){
+            throw new BadRequestError("Email deve possuir pelo menos 2")
         }
 
-        if (typeof email !== "string") {
-            throw new BadRequestError("'email' deve ser string")
-        }
-
-        if (typeof password !== "string") {
-            throw new BadRequestError("'password' deve ser string")
+        if(password.length < 8){
+            throw new BadRequestError("'password' tem que ter mais de 8 caracteres")
         }
 
         if (!email.match(regexEmail)) {
@@ -68,22 +38,25 @@ export class UserBusiness {
         }
 
         const hashPassword = await this.hashManager.hash(password)
+        const id = this.idGenerator.generate()
 
         const newUser = new User(
-            this.idGenerator.generate(),
+            id,
             nickname,
             email,
             hashPassword,
             USER_ROLES.NORMAL, // só é possível criar users com contas normais
+            new Date().toISOString(),
             new Date().toISOString()
         )
 
         const newUserDB = newUser.toDBModel()
+        
         await this.usersDatabase.insertUser(newUserDB)
 
         const tokenPayload: TokenPayload = {
             id: newUser.getId(),
-            name: newUser.getName(),
+            nickname: newUser.getNickName(),
             role: newUser.getRole()
         }
         const token = this.tokenManager.createToken(tokenPayload)
@@ -98,15 +71,7 @@ export class UserBusiness {
     public login = async (input: LoginInputDTO): Promise<LoginOutputDTO> => {
         const { email, password } = input
 
-        if (typeof email !== "string") {
-            throw new Error("'email' deve ser string")
-        }
-
-        if (typeof password !== "string") {
-            throw new Error("'password' deve ser string")
-        }
-
-        const userDB = await this.usersDatabase.findUserByEmail(email)
+        const userDB = await this.usersDatabase.getUserByEmail(email)
 
         if (!userDB) {
             throw new NotFoundError("'email' não encontrado")
@@ -114,11 +79,12 @@ export class UserBusiness {
 
         const user = new User(
             userDB.id,
-            userDB.name,
+            userDB.nickname,
             userDB.email,
             userDB.password,
             userDB.role,
-            userDB.created_at
+            userDB.created_at,
+            userDB.updated_at
         )
 
         const passwordCompare = await this.hashManager.compare(password, user.getPassword())
@@ -129,7 +95,7 @@ export class UserBusiness {
 
         const tokenPayload: TokenPayload = {
             id: user.getId(),
-            name: user.getName(),
+            nickname: user.getNickName(),
             role: user.getRole()
         }
 

@@ -3,23 +3,24 @@ import { UserDB, UserModel, USER_ROLES } from "../types"
 export class User {
     constructor (
         private id: string,
-        private name: string,
+        private nickname: string,
         private email: string,
         private password: string,
         private role: USER_ROLES,
-        private createdAt: string
+        private createdAt: string,
+        private updatedAt: string
     ) {}
 
     public getId(): string {
         return this.id
     }
 
-    public getName(): string{
-        return this.name
+    public getNickName(): string{
+        return this.nickname
     }
 
-    public setName(value: string): void{
-        this.name = value
+    public setNickName(value: string): void{
+        this.nickname = value
     }
 
     public getEmail(): string{
@@ -54,25 +55,35 @@ export class User {
         this.createdAt = value
     }
 
+    public getUpdatedAt(): string{
+        return this.updatedAt
+    }
+
+    public setUpdatedAt(value: string){
+        this.updatedAt = value
+    }
+
     public toDBModel(): UserDB {
         return {
             id: this.id,
-            name: this.name,
+            nickname: this.nickname,
             email: this.email,
             password: this.password,
             role: this.role,
-            created_at: this.createdAt
+            created_at: this.createdAt,
+            updated_at: this.updatedAt
         }
     }
 
     public toBusinessModel(): UserModel {
         return {
             id: this.id,
-            name: this.name,
+            nickname: this.nickname,
             email: this.email,
             password: this.password,
             role: this.role,
-            createdAt: this.createdAt
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt
         }
     }
     

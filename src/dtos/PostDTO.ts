@@ -1,28 +1,48 @@
 import { BadRequestError } from "../errors/BadRequestError"
-import { PostModel } from "../types"
+import { CommentModel, CommentWithCreatorDB } from "../types"
+import { CreateCommentsOutputDTO } from "./CommentDTO"
 
-export interface GetPostInputDTO{
+export interface GetPostInputDTO {
     token: string | undefined
 }
 
-export type GetPostOutputDTO = PostModel[]
+export type GetPostOutputDTO = {
+    id:string,
+    content:string,
+    likes:number,
+    dislikes:number,
+    creator:{
+        id:string,
+        nickname:string,
+    }
+    comments:{
+        count:number,
+        comments: CreateCommentsOutputDTO[]
+    }
+    createdAt:string,
+    updatedAt:string
+}
 
 export interface CreatePostInputDTO {
     content: string,
-    tokenUser: string | undefined
+    token: string | undefined
 }
 
 export interface CreatePostOutputDTO {
-    message: string,
-    post: {
-        id: string,
-        creatorId: string,
-        content: string,
-        newLikes: number,
-        newDislikes: number,
-        createdAt: string,
-        updatedAt: string
+    id:string,
+    content:string,
+    likes:number,
+    dislikes:number,
+    creator:{
+        id:string,
+        nickname:string,
     }
+    comments:{
+        count:number,
+        comments: CommentModel[]
+    }
+    createdAt:string,
+    updatedAt:string,
 }
 
 export interface EditPostInputDTO {
@@ -32,38 +52,34 @@ export interface EditPostInputDTO {
 }
 
 export interface EditPostOutputDTO {
-    message: string,
-    post: {
-        idToEdit: string,
-        creatorId: string,
-        content: string,
-        likes: number,
-        dislikes: number,
-        createdAt: string,
-        updatedAt: string
-    }
+    message: string
 }
 
-export interface DeletePostInputDTO{
+export interface DeletePostInputDTO {
     idToDelete: string,
     token: string | undefined
+}
+
+export interface DeletePostOutputDTO {
+    message: string
 }
 
 export class PostDTO {
 
     public createPostInput(
         content: unknown,
-        tokenUser: unknown
+        token: unknown
     ): CreatePostInputDTO {
+        
 
-        if (typeof tokenUser !== "string") throw new BadRequestError("'token' deve ser string")
+        if (typeof token !== "string") throw new BadRequestError("'token' deve ser string")
 
 
         if (typeof content !== "string") throw new BadRequestError("'content' deve ser string")
 
         const dto: CreatePostInputDTO = {
             content,
-            tokenUser
+            token
         }
 
         return dto

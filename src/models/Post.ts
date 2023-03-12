@@ -1,15 +1,18 @@
-import { PostModel, PostDB } from "../types"
+import { CommentModel, CommentWithCreatorDB, PostDB } from "../types"
+import {CreateCommentsOutputDTO} from '../dtos/CommentDTO'
+import { CreatePostOutputDTO } from "../dtos/PostDTO"
 
 export class Post{
     constructor(
         private id: string,
+        private creatorId: string,
         private content: string,
         private likes: number,
         private dislikes: number,
+        private comments: number,
+        private creatorNickname: string,
         private createdAt: string,
-        private updatedAt: string,
-        private creatorId: string,
-        private creatorName: string
+        private updatedAt: string 
     ){}
 
     public getId(): string{
@@ -80,12 +83,20 @@ export class Post{
         this.creatorId = value
     }
 
-    public getCreatorName(): string {
-        return this.creatorName
+    public getCreatorNickName(): string {
+        return this.creatorNickname
     }
 
-    public setCreatorName(value: string): void {
-        this.creatorName = value
+    public setCreatorNickName(value: string): void {
+        this.creatorNickname = value
+    }
+
+    public getComments(): number{
+        return this.comments
+    }
+
+    public setComments(value: number){
+        this.comments = value
     }
 
     public toDBModel(): PostDB{
@@ -95,23 +106,47 @@ export class Post{
             content: this.content,
             likes: this.likes,
             dislikes: this.dislikes,
+            comments: this.comments,
             created_at: this.createdAt,
             updated_at: this.updatedAt
         }
     }
 
-    public toBusinessModel(): PostModel{
-        return{
+    public toBusinessModel(): CreatePostOutputDTO{
+        return {
             id: this.id,
             content: this.content,
             likes: this.likes,
             dislikes: this.dislikes,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
             creator: {
-                creatorId: this.creatorId,
-                creatorName: this.creatorName
-            }
+                id: this.creatorId,
+                nickname: this.creatorNickname
+            },
+            comments:{
+                count: this.comments,
+                comments: []
+            },
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt
+        }
+    }
+
+    public insertComent(commentsExt: CommentModel[]): CreatePostOutputDTO{
+        return {
+            id: this.id,
+            content: this.content,
+            likes: this.likes,
+            dislikes: this.dislikes,
+            creator: {
+                id: this.creatorId,
+                nickname: this.creatorNickname
+            },
+            comments:{
+                count: this.comments,
+                comments: commentsExt
+            },
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt
         }
     }
 }

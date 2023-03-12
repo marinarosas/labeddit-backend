@@ -9,25 +9,39 @@ export interface PostDB {
     content: string,
     likes: number,
     dislikes: number,
+    comments: number,
     created_at: string,
     updated_at: string
 }
 
-export interface PostWithCreatorDB extends PostDB{
-    creator_name: string
-}
-
-export interface PostModel{
+export interface PostWithCreatorDB{
     id: string,
+    creator_id: string,
     content: string,
     likes: number,
     dislikes: number,
-    createdAt: string,
-    updatedAt: string,
+    comments: number,
+    created_at: string,
+    updated_at: string,
+    creator_nickname: string
+}
+
+
+export interface PostModel{
+    id:string,
+    content:string,
+    likes:number,
+    dislikes:number,
     creator:{
-        creatorId: string,
-        creatorName: string
+        id:string,
+        nickname:string,
     }
+    comments:{
+        count:number,
+        comments: CommentModel[]
+    }
+    createdAt:string,
+    updatedAt:string
 }
 
 export interface CommentDB {
@@ -49,14 +63,21 @@ export interface CommentModel{
     dislikes: number,
     createdAt: string,
     updatedAt: string,
-    creator:{
-        userId: string,
-        creatorName: string
+    creator: {
+        id: string,
+        nickname: string,
     }
 }
 
-export interface CommentWithCreatorDB extends CommentDB{
-    creator_name: string
+export interface CommentWithCreatorDB {
+    id:string,
+    creator_id: string,
+    content: string,
+    likes: number,
+    dislikes: number,
+    created_at: string,
+    updated_at:string,
+    creator_nickname: string
 }
 
 export interface LikeDislikePostDB{
@@ -78,24 +99,26 @@ export enum POST_LIKE{
 
 export interface UserDB {
     id: string,
-    name: string,
+    nickname: string,
     email: string,
     password: string,
     role: USER_ROLES,
-    created_at: string
+    created_at: string,
+    updated_at: string
 }
 
 export interface UserModel {
     id: string,
-    name: string,
+    nickname: string,
     email: string,
     password: string,
     role: USER_ROLES,
-    createdAt: string
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface TokenPayload {
     id: string,
-    name: string,
+    nickname: string,
     role: USER_ROLES
 }
