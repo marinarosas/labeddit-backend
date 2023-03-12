@@ -13,7 +13,7 @@ export class UsersDatabaseMock extends BaseDatabase{
                 id: "id-mock",
                 nickname: "Normal Mock",
                 email: "normal@email.com",
-                password: "hash-bananinha",
+                password: "hash-brisa",
                 role: USER_ROLES.NORMAL,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
@@ -22,7 +22,7 @@ export class UsersDatabaseMock extends BaseDatabase{
                 id: "id-mock",
                 nickname: "Admin Mock",
                 email: "admin@email.com",
-                password: "hash-bananinha",
+                password: "hash-brisa",
                 role: USER_ROLES.ADMIN,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
@@ -49,7 +49,7 @@ export class UsersDatabaseMock extends BaseDatabase{
                     id: "id-mock",
                     nickname: "Normal Mock",
                     email: "normal@email.com",
-                    password: "hash-bananinha",
+                    password: "hash-brisa",
                     role: USER_ROLES.NORMAL,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
@@ -59,7 +59,7 @@ export class UsersDatabaseMock extends BaseDatabase{
                     id: "id-mock",
                     nickname: "Admin Mock",
                     email: "admin@email.com",
-                    password: "hash-bananinha",
+                    password: "hash-brisa",
                     role: USER_ROLES.ADMIN,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { UserBusiness } from "../business/UserBusiness"
-import { LoginInputDTO, SignupInputDTO, SignupOutputDTO, UserDTO } from "../dtos/UserDTO"
+import { LoginInputDTO, LoginOutputDTO, SignupInputDTO, SignupOutputDTO, UserDTO } from "../dtos/UserDTO"
 import { BaseError } from "../errors/BaseError"
 
 export class UserController {
@@ -34,12 +34,13 @@ export class UserController {
 
     public login = async (req: Request, res: Response) => {
         try {
-            const input: LoginInputDTO = {
-                email: req.body.email,
-                password: req.body.password
-            }
+            const userDTO = new UserDTO()
 
-            const output = await this.userBusiness.login(input)
+            const input = userDTO.loginInput(
+                req.body.email,
+                req.body.password
+            )
+            const output: LoginOutputDTO = await this.userBusiness.login(input)
 
             res.status(200).send(output)
 

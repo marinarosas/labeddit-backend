@@ -7,19 +7,19 @@
 //     token: string | undefined
 // }
 
-// export interface CreateCommentsOutputDTO {
-//     id: string,
-//     postId: string,
-//     content: string,
-//     likes: number,
-//     dislikes: number,
-//     createdAt: string,
-//     updatedAt: string,
-//     creator: {
-//         id: string,
-//         nickname: string
-//     }
-// }
+export interface CreateCommentsOutputDTO {
+    id: string,
+    postId: string,
+    content: string,
+    likes: number,
+    dislikes: number,
+    createdAt: string,
+    updatedAt: string,
+    creator: {
+        id: string,
+        nickname: string
+    }
+}
 
 // export interface GetCommentInputDTO {
 //     postId: string,

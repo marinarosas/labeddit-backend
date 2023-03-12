@@ -10,7 +10,7 @@ export class UsersDatabase extends BaseDatabase{
        return await BaseDatabase.connection(UsersDatabase.TABLE_USERS)
     }
 
-    public async getUserByName (q: string){
+    public async getUserByName (q: string | undefined){
         return await BaseDatabase.connection(UsersDatabase.TABLE_USERS).where("content", "LIKE", `%${q}%`)
     }
 

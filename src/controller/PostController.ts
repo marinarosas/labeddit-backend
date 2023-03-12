@@ -1,121 +1,128 @@
-// import { Request, Response } from "express"
-// import { PostBusiness } from "../business/PostBusiness"
-// import { LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
-// import { CreatePostInputDTO, DeletePostInputDTO, EditPostInputDTO, GetPostInputDTO } from "../dtos/PostDTO"
-// import { BaseError } from "../errors/BaseError"
+import { Request, Response } from "express"
+import { PostBusiness } from "../business/PostBusiness"
+import { LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
+import { CreatePostInputDTO, DeletePostInputDTO, EditPostInputDTO, GetPostInputDTO, PostDTO } from "../dtos/PostDTO"
+import { BaseError } from "../errors/BaseError"
 
-// export class PostController {
-//     constructor(
-//         private postBusiness: PostBusiness
-//     ) { }
+export class PostController {
+    constructor(
+        private postBusiness: PostBusiness
+    ) { }
 
-//     public getPosts = async (req: Request, res: Response) => {
-//         try {
+    public getPosts = async (req: Request, res: Response) => {
+        try {
 
-//             const input: GetPostInputDTO = {
-//                 token: req.headers.authorization
-//             }
+            // const input: GetPostInputDTO = {
+            //     token: req.headers.authorization
+            // }
 
-//             const output = await this.postBusiness.getPosts(input)
+           // const output = await this.postBusiness.getPosts(input)
 
-//             res.status(200).send(output)
+           // res.status(200).send(output)
 
-//         } catch (error) {
-//             console.log(error)
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
+        } catch (error) {
+            console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
 
-//     public createPost = async (req: Request, res: Response) => {
-//         try {
+    public createPost = async (req: Request, res: Response) => {
+        try {
 
-//             const input: CreatePostInputDTO = {
-//                 content: req.body.content,
-//                 tokenUser: req.headers.authorization
-//             }
+            const postDTO = new PostDTO()
 
-//             const output = await this.postBusiness.createPost(input)
+            const input = postDTO.createPostInput(
+                req.body.content,
+                req.headers.authorization
+            )
 
-//             res.status(201).send(output)
+            const output = await this.postBusiness.createPost(input)
 
-//         } catch (error) {
-//             console.log(error)
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
+            res.status(201).send(output)
 
-//     public editPost = async (req: Request, res: Response) => {
-//         try {
+        } catch (error) {
+            console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
 
-//             const input: EditPostInputDTO = {
-//                 idToEdit: req.params.id,
-//                 content: req.body.content,
-//                 token: req.headers.authorization
-//             }
+    public editPost = async (req: Request, res: Response) => {
+        try {
 
-//             await this.postBusiness.editPost(input)
+            const postDTO = new PostDTO()
 
-//             res.status(200).end()
+            const input = postDTO.editPostInput(
+                req.params.id,
+                req.headers.authorization,
+                req.body.content
+            )
 
-//         } catch (error) {
-//             console.log(error)
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
+            const output = await this.postBusiness.editPost(input)
 
-//     public deletePost = async (req: Request, res: Response) => {
-//         try {
-//             const input: DeletePostInputDTO = {
-//                 idToDelete: req.params.id,
-//                 token: req.headers.authorization
-//             }
+            res.status(200).send(output)
 
-//             await this.postBusiness.deletePost(input)
+        } catch (error) {
+            console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
 
-//             res.status(200).end()
+    public deletePost = async (req: Request, res: Response) => {
+        try {
 
-//         } catch (error) {
-//             console.log(error)
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
+            const postDTO = new PostDTO()
 
-//     // public likeOrDislikePost = async (req: Request, res: Response) => {
-//     //     try {
+            const input = postDTO.deletePostInput(
+                req.params.id,
+                req.headers.authorization
+            )
+               
+            const output = await this.postBusiness.deletePost(input)
 
-//     //         const input: LikesDislikesInputDTO = {
-//     //             idToLikeDislike: req.params.id,
-//     //             token: req.headers.authorization,
-//     //             like: req.body.like
-//     //         }
+            res.status(200).send(output)
 
-//     //         await this.postBusiness.likeOrDislikePost(input)
+        } catch (error) {
+            console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
 
-//     //         res.status(200).end()
+    // public likeOrDislikePost = async (req: Request, res: Response) => {
+    //     try {
 
-//     //     } catch (error) {
-//     //         console.log(error)
-//     //         if (error instanceof BaseError) {
-//     //             res.status(error.statusCode).send(error.message)
-//     //         } else {
-//     //             res.status(500).send("Erro inesperado")
-//     //         }
-//     //     }
-//     // }
-// }
+    //         const input: LikesDislikesInputDTO = {
+    //             idToLikeDislike: req.params.id,
+    //             token: req.headers.authorization,
+    //             like: req.body.like
+    //         }
+
+    //         await this.postBusiness.likeOrDislikePost(input)
+
+    //         res.status(200).end()
+
+    //     } catch (error) {
+    //         console.log(error)
+    //         if (error instanceof BaseError) {
+    //             res.status(error.statusCode).send(error.message)
+    //         } else {
+    //             res.status(500).send("Erro inesperado")
+    //         }
+    //     }
+    // }
+}

@@ -71,14 +71,6 @@ export class UserBusiness {
     public login = async (input: LoginInputDTO): Promise<LoginOutputDTO> => {
         const { email, password } = input
 
-        if (typeof email !== "string") {
-            throw new Error("'email' deve ser string")
-        }
-
-        if (typeof password !== "string") {
-            throw new Error("'password' deve ser string")
-        }
-
         const userDB = await this.usersDatabase.getUserByEmail(email)
 
         if (!userDB) {

@@ -38,7 +38,7 @@ VALUES
 CREATE TABLE comments(
     id PRIMARY KEY UNIQUE NOT NULL,
     post_id UNIQUE NOT NULL,
-    user_id NOt NULL,
+    user_id NOT NULL,
     content TEXT NOT NULL,
     likes INTEGER DEFAULT(0) NOT NULL,
     dislikes INTEGER DEFAULT(0) NOT NULL,
@@ -75,20 +75,9 @@ CREATE TABLE likes_dislikes_comments(
     FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (comment_id) REFERENCES comments_post(id)
+    FOREIGN KEY (comment_id) REFERENCES comments(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE 
-);
-CREATE TABLE posts_comments(
-    post_id TEXT NOT NULL,
-    user_id TEXT NOT NULL,
-    comment INTEGER NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES posts(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
 SELECT 
@@ -99,7 +88,7 @@ SELECT
     posts.dislikes,
     posts.created_at,
     posts.updated_at,
-    users.name AS creator_name
+    users.nickname AS creator_nickname
 FROM posts
 JOIN users
 ON posts.creator_id = users.id;
@@ -114,10 +103,9 @@ WHERE id = "u002";
 
 SELECT * FROM users;
 SELECT * FROM posts;
-SELECT * FROM comments_post;
+SELECT * FROM comments;
 SELECT * FROM likes_dislikes_posts;
 SELECT * FROM likes_dislikes_comments;
-SELECT * FROM posts_comments;
 
 
 DROP TABLE users;
@@ -125,3 +113,38 @@ DROP TABLE posts;
 DROP TABLE comments;
 DROP TABLE likes_dislikes_posts;
 DROP TABLE likes_dislikes_comments;
+
+
+SELECT 
+    comments.id,
+    comments.post_id,
+    comments.user_id,
+    comments.content,
+    comments.likes,
+    comments.dislikes,
+    comments.created_at,
+    comments.updated_at,
+    users.nickname AS creator_nickname
+FROM comments
+JOIN users
+ON comments.user_id = users.id;
+
+SELECT 
+    comments.id,
+    comments.post_id,
+    comments.user_id,
+    comments.content,
+    comments.likes,
+    comments.dislikes,
+    comments.created_at,
+    comments.updated_at,
+    posts.creator_id,
+    posts.content,
+    posts.likes,
+    posts.dislikes,
+    posts.comments,
+    posts.created_at,
+    posts.updated_at
+FROM comments
+JOIN posts
+ON comments.post_id = posts.id;

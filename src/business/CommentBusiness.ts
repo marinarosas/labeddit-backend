@@ -9,7 +9,7 @@
 // import { TokenManager } from "../services/TokenManager"
 // import { LikeDislikeCommentDB, CommentWithCreatorDB, POST_LIKE, USER_ROLES } from "../types"
 
-// export class CommentBusiness {
+export class CommentBusiness {
 //     constructor(
 //         private commentsDatabase: CommentsDatabase,
 //         private idGenerator: IdGenerator,
@@ -299,4 +299,4 @@
 //         await this.commentsDatabase.updateCommentById(idToLikeDislike, updateCommentDB)
 //     }
 
-// }
+}
