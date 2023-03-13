@@ -148,3 +148,17 @@ SELECT
 FROM comments
 JOIN posts
 ON comments.post_id = posts.id;
+
+SELECT 
+    comments.id,
+    comments.post_id,
+    comments.content,
+    comments.likes,
+    comments.dislikes,
+    comments.created_at,
+    comments.updated_at,
+    comments.user_id,
+    users.nickname 
+FROM comments
+INNER JOIN posts ON comments.post_id = posts.id
+INNER JOIN users ON comments.user_id = users.id;
