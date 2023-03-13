@@ -20,65 +20,65 @@ export class PostBusiness {
         private tokenManager: TokenManager
     ) { }
 
-    // public getPosts = async (input: GetPostInputDTO): Promise<CreatePostOutputDTO[]> => {
+    public getPosts = async (input: GetPostInputDTO): Promise<CreatePostOutputDTO[]> => {
 
-    //     const { token } = input
+        const { token } = input
 
-    //     if (token === undefined) {
-    //         throw new BadRequestError("'token' ausente")
-    //     }
+        if (token === undefined) {
+            throw new BadRequestError("'token' ausente")
+        }
 
-    //     const payload = this.tokenManager.getPayload(token)
+        const payload = this.tokenManager.getPayload(token)
 
-    //     if (payload === null) {
-    //         throw new BadRequestError("'token'inválido")
-    //     }
+        if (payload === null) {
+            throw new BadRequestError("'token'inválido")
+        }
 
-    //     const postsDB: PostDB[] = await this.postsDatabase.getAllPosts()
+        const postsDB: PostDB[] = await this.postsDatabase.getAllPosts()
 
-    //     const users = await this.usersDatabase.getAllUsers()
+        const users = await this.usersDatabase.getAllUsers()
 
-    //     const posts = postsDB.map((postDB) => {
-    //         const userFind = users.find((user)=>user.id === postDB.creator_id)
+        const posts = postsDB.map((postDB) => {
+            const userFind = users.find((user)=>user.id === postDB.creator_id)
 
-    //         if(!userFind){
-    //             throw new BadRequestError ("Usuário não encontrado")
-    //         }
+            if(!userFind){
+                throw new BadRequestError ("Usuário não encontrado")
+            }
 
-    //         const user: TokenPayload = {
-    //             id: userFind.id,
-    //             nickname: userFind.nickname,
-    //             role: userFind.role
-    //         }
+            const user: TokenPayload = {
+                id: userFind.id,
+                nickname: userFind.nickname,
+                role: userFind.role
+            }
 
-    //         const post = new Post(
-    //             postDB.id,
-    //             user.id,
-    //             postDB.content,
-    //             postDB.likes,
-    //             postDB.dislikes,
-    //             postDB.comments,
-    //             user.nickname,
-    //             postDB.created_at,
-    //             postDB.updated_at,
-    //         )
+            const post = new Post(
+                postDB.id,
+                user.id,
+                postDB.content,
+                postDB.likes,
+                postDB.dislikes,
+                postDB.comments,
+                user.nickname,
+                postDB.created_at,
+                postDB.updated_at,
+            )
 
-    //         return post
-    //     }
-    //     )
+            return post
+        }
+        )
 
-    //     const output: CreatePostOutputDTO[] = []
+        const output: CreatePostOutputDTO[] = []
 
-    //     for(let i of posts){
-    //         const comments = await this.commentsDatabase.getCommentWithPostId(i.getId())
-    //         if(!comments){
-    //             throw new BadRequestError("Comentários não encontrados")
-    //         }
-    //         const result = i.insertComent(comments)
-    //         output.push(result)
-    //     }
-    //     return output
-    // }
+        for(let i of posts){
+            const comments = await this.commentsDatabase.getCommentWithPostId(i.getId())
+            if(!comments){
+                throw new BadRequestError("Comentários não encontrados")
+            }
+            const result = i.insertComent(comments)
+            output.push(result)
+        }
+        return output
+    }
 
     public createPost = async (input: CreatePostInputDTO): Promise<CreatePostOutputDTO> => {
 

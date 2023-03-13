@@ -68,18 +68,19 @@ export class CommentsDatabase extends BaseDatabase {
             .connection(CommentsDatabase.TABLE_COMMENTS)
             .select(
                 "comments.id",
-                "comments.post_id AS postId",
+                "comments.post_id",
                 "comments.content",
                 "comments.likes",
                 "comments.dislikes",
-                "comments.created_at AS createdAt",
-                "comments.updated_at AS updatedAt",
+                "comments.created_at",
+                "comments.updated_at",
                 "comments.user_id",
-                "users.nickname AS creator_nickname"
+                "users.nickname"
             )
-            .join("posts", "comments.post_id", "=", "posts.id")
-            .join("users", "comments.user_id", "=", "user.id")
+            .innerJoin("posts", "comments.post_id", "=", "posts.id")
+            .innerJoin("users", "comments.user_id", "=", "users.id")
             .where("post_id", postId)
+            
 
         return result
     }

@@ -12,13 +12,13 @@ export class PostController {
     public getPosts = async (req: Request, res: Response) => {
         try {
 
-            // const input: GetPostInputDTO = {
-            //     token: req.headers.authorization
-            // }
+            const input: GetPostInputDTO = {
+                token: req.headers.authorization
+            }
 
-           // const output = await this.postBusiness.getPosts(input)
+           const output = await this.postBusiness.getPosts(input)
 
-           // res.status(200).send(output)
+           res.status(200).send(output)
 
         } catch (error) {
             console.log(error)
