@@ -1,7 +1,7 @@
 import { CommentsDatabase } from "../database/CommentsDataBase"
 import { PostsDatabase } from "../database/PostsDataBase"
 import { UsersDatabase } from "../database/UsersDatabase"
-import { LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
+import { LikesDislikesInputDTO, LikesDislikesOutputDTO } from "../dtos/LikesDislikesDTO"
 import { CreatePostInputDTO, CreatePostOutputDTO, DeletePostInputDTO, DeletePostOutputDTO, EditPostInputDTO, EditPostOutputDTO, GetPostInputDTO, GetPostOutputDTO } from "../dtos/PostDTO"
 import { BadRequestError } from "../errors/BadRequestError"
 import { NotFoundError } from "../errors/NotFoundError"
@@ -63,21 +63,12 @@ export class PostBusiness {
                 postDB.updated_at,
             )
 
-            return post
+            return post.toBusinessModel()
         }
         )
 
-        const output: CreatePostOutputDTO[] = []
-
-        for(let i of posts){
-            const comments = await this.commentsDatabase.getCommentWithPostId(i.getId())
-            if(!comments){
-                throw new BadRequestError("Comentários não encontrados")
-            }
-            const result = i.insertComent(comments)
-            output.push(result)
-        }
-        return output
+        const output: CreatePostOutputDTO[] = posts
+        return output        
     }
 
     public createPost = async (input: CreatePostInputDTO): Promise<CreatePostOutputDTO> => {
@@ -223,92 +214,94 @@ export class PostBusiness {
 
     }
 
-    // public likeOrDislikePost = async (input: LikesDislikesInputDTO): Promise<void> => {
+    public likeOrDislikePost = async (input: LikesDislikesInputDTO): Promise<LikesDislikesOutputDTO> => {
 
-    //     const { idToLikeDislike, token, like } = input
+        const { id, token, like } = input
 
-    //     if (token === undefined) {
-    //         throw new BadRequestError("'token' ausente")
-    //     }
+        if (token === undefined) {
+            throw new BadRequestError("'token' ausente")
+        }
 
-    //     if (typeof token !== "string") {
-    //         throw new BadRequestError("'token' deve ser uma string")
-    //     }
+        if (token === null) {
+            throw new BadRequestError("'token' deve ser informado")
+        }
 
-    //     if (token === null) {
-    //         throw new BadRequestError("'token' deve ser informado")
-    //     }
+        const payload = this.tokenManager.getPayload(token)
 
-    //     const payload = this.tokenManager.getPayload(token)
+        if (payload === null) {
+            throw new BadRequestError("token não é valido")
+        }
 
-    //     if (payload === null) {
-    //         throw new BadRequestError("token não é valido")
-    //     }
+        if (typeof like !== "boolean") {
+            throw new BadRequestError("'like' deve ser um booleano")
+        }
 
-    //     if (typeof like !== "boolean") {
-    //         throw new BadRequestError("'like' deve ser um booleano")
-    //     }
-
-    //     //const postWithCreatorDB = await this.postsDatabase.getPostWithCreatorById(idToLikeDislike)
+        const [postWithCreatorDB] = await this.postsDatabase.getPostWithCreatorById(id)
 
 
-    //     // if (!postWithCreatorDB) {
-    //     //     throw new NotFoundError("Id não encontrado")
-    //     // }
+        if (!postWithCreatorDB) {
+            throw new NotFoundError("Id não encontrado")
+        }
 
-    //     const userId = payload.id
-    //     const likeSQLite = like ? 1 : 0
+        const userId = payload.id
+        const likeSQLite = like ? 1 : 0
 
-    //     // const likeDislikePostDB: LikeDislikePostDB = {
-    //     //     user_id: userId,
-    //     //    // post_id: postWithCreatorDB.id,
-    //     //     like: likeSQLite
-    //     // }
+        const likeDislikePostDB: LikeDislikePostDB = {
+            user_id: userId,
+            post_id: postWithCreatorDB.id,
+            like: likeSQLite
+        }
 
-    //     const post = new Post(
-    //         postWithCreatorDB.id,
-    //         postWithCreatorDB.content,
-    //         postWithCreatorDB.likes,
-    //         postWithCreatorDB.dislikes,
-    //         postWithCreatorDB.created_at,
-    //         postWithCreatorDB.updated_at,
-    //         postWithCreatorDB.creator_id,
-    //         postWithCreatorDB.creator_nickname
-    //     )
+        const post = new Post(
+            postWithCreatorDB.id,
+            postWithCreatorDB.creator_id,
+            postWithCreatorDB.content,
+            postWithCreatorDB.likes,
+            postWithCreatorDB.dislikes,
+            postWithCreatorDB.comments,
+            postWithCreatorDB.creator_nickname,
+            postWithCreatorDB.created_at,
+            postWithCreatorDB.updated_at            
+        )
 
-    //     const likeDislikeExist = await this.postsDatabase
-    //         .getLikeDislike(likeDislikePostDB)
+        const likeDislikeExist = await this.postsDatabase
+            .getLikeDislike(likeDislikePostDB)
         
-    //     if (likeDislikeExist === POST_LIKE.ALREADY_LIKED) {
+        if (likeDislikeExist === POST_LIKE.ALREADY_LIKED) {
 
-    //         if (like) {
-    //             await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
-    //             post.removeLike()
-    //         } else {
-    //             await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
-    //             post.removeLike()
-    //             post.addDislike()
-    //         }
-    //     } else if (likeDislikeExist === POST_LIKE.ALREADY_DISLIKED) {
-    //         if (like) {
-    //             await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
-    //             post.removeDislike()
-    //             post.addLike()
-    //         } else {
-    //             await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
-    //             post.removeDislike()
-    //         }
-    //     } else {
+            if (like) {
+                await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
+                post.removeLike()
+            } else {
+                await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
+                post.removeLike()
+                post.addDislike()
+            }
+        } else if (likeDislikeExist === POST_LIKE.ALREADY_DISLIKED) {
+            if (like) {
+                await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
+                post.removeDislike()
+                post.addLike()
+            } else {
+                await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
+                post.removeDislike()
+            }
+        } else {
 
-    //         await this.postsDatabase.likeOrDislikePost(likeDislikePostDB)
+            await this.postsDatabase.likeOrDislikePost(likeDislikePostDB)
 
-    //         like ? post.addLike() : post.addDislike()
+            like ? post.addLike() : post.addDislike()
 
-    //     }
+        }
 
-    //     const updatePostDB = post.toDBModel()
+        const updatePostDB = post.toDBModel()
 
-    //     await this.postsDatabase.updatePostById(idToLikeDislike, updatePostDB)
-    // }
+        await this.postsDatabase.updatePostById(id, updatePostDB)
+
+        return({
+            message: "Like ou Dislike realizado com sucesso"
+        }
+        )
+    }
 
 }

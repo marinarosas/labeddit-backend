@@ -122,31 +122,23 @@ export class Post{
                 id: this.creatorId,
                 nickname: this.creatorNickname
             },
-            comments:{
-                count: this.comments,
-                comments: []
-            },
             createdAt: this.createdAt,
             updatedAt: this.updatedAt
         }
     }
 
-    public insertComent(commentsExt: CommentModel[]): CreatePostOutputDTO{
-        return {
-            id: this.id,
-            content: this.content,
-            likes: this.likes,
-            dislikes: this.dislikes,
-            creator: {
-                id: this.creatorId,
-                nickname: this.creatorNickname
-            },
-            comments:{
-                count: this.comments,
-                comments: commentsExt
-            },
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt
-        }
-    }
+    // public insertComent(commentsExt: CommentModel[]): CreatePostOutputDTO{
+    //     return {
+    //         id: this.id,
+    //         content: this.content,
+    //         likes: this.likes,
+    //         dislikes: this.dislikes,
+    //         creator: {
+    //             id: this.creatorId,
+    //             nickname: this.creatorNickname
+    //         },
+    //         createdAt: this.createdAt,
+    //         updatedAt: this.updatedAt
+    //     }
+    // }
 }

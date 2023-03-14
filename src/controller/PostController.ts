@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { PostBusiness } from "../business/PostBusiness"
-import { LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
+import { LikeDislikeDTO, LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
 import { CreatePostInputDTO, DeletePostInputDTO, EditPostInputDTO, GetPostInputDTO, PostDTO } from "../dtos/PostDTO"
 import { BaseError } from "../errors/BaseError"
 
@@ -103,26 +103,28 @@ export class PostController {
         }
     }
 
-    // public likeOrDislikePost = async (req: Request, res: Response) => {
-    //     try {
+    public likeOrDislikePost = async (req: Request, res: Response) => {
+        try {
 
-    //         const input: LikesDislikesInputDTO = {
-    //             idToLikeDislike: req.params.id,
-    //             token: req.headers.authorization,
-    //             like: req.body.like
-    //         }
+            const likeDislikeDTO = new LikeDislikeDTO()
 
-    //         await this.postBusiness.likeOrDislikePost(input)
+            const input = likeDislikeDTO.likesDislikesPostInput(
+                req.params.id,
+                req.headers.authorization,
+                req.body.like
+            )
 
-    //         res.status(200).end()
+            const output = await this.postBusiness.likeOrDislikePost(input)
 
-    //     } catch (error) {
-    //         console.log(error)
-    //         if (error instanceof BaseError) {
-    //             res.status(error.statusCode).send(error.message)
-    //         } else {
-    //             res.status(500).send("Erro inesperado")
-    //         }
-    //     }
-    // }
+            res.status(200).send(output)
+
+        } catch (error) {
+            console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
 }

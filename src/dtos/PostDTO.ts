@@ -14,11 +14,7 @@ export type GetPostOutputDTO = {
     creator:{
         id:string,
         nickname:string,
-    }
-    comments:{
-        count:number,
-        comments: CreateCommentsOutputDTO[]
-    }
+    },
     createdAt:string,
     updatedAt:string
 }
@@ -36,11 +32,7 @@ export interface CreatePostOutputDTO {
     creator:{
         id:string,
         nickname:string,
-    }
-    comments:{
-        count:number,
-        comments: CommentModel[]
-    }
+    },
     createdAt:string,
     updatedAt:string,
 }
@@ -125,4 +117,5 @@ export class PostDTO {
 
         return dto
     }
+
 }

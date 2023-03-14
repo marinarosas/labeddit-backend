@@ -35,11 +35,7 @@ export interface PostModel{
     creator:{
         id:string,
         nickname:string,
-    }
-    comments:{
-        count:number,
-        comments: CommentModel[]
-    }
+    },
     createdAt:string,
     updatedAt:string
 }
