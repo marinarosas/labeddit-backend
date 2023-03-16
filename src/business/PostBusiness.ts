@@ -1,21 +1,19 @@
-import { CommentsDatabase } from "../database/CommentsDataBase"
 import { PostsDatabase } from "../database/PostsDataBase"
 import { UsersDatabase } from "../database/UsersDatabase"
 import { LikesDislikesInputDTO, LikesDislikesOutputDTO } from "../dtos/LikesDislikesDTO"
-import { CreatePostInputDTO, CreatePostOutputDTO, DeletePostInputDTO, DeletePostOutputDTO, EditPostInputDTO, EditPostOutputDTO, GetPostInputDTO, GetPostOutputDTO } from "../dtos/PostDTO"
+import { CreatePostInputDTO, CreatePostOutputDTO, DeletePostInputDTO, DeletePostOutputDTO, EditPostInputDTO, EditPostOutputDTO, GetPostInputDTO } from "../dtos/PostDTO"
 import { BadRequestError } from "../errors/BadRequestError"
 import { NotFoundError } from "../errors/NotFoundError"
 import { Post } from "../models/Post"
 import { IdGenerator } from "../services/IdGenerator"
 import { TokenManager } from "../services/TokenManager"
-import { LikeDislikePostDB, PostDB, PostModel, POST_LIKE, TokenPayload, USER_ROLES } from "../types"
+import { LikeDislikePostDB, PostDB, POST_LIKE, TokenPayload, USER_ROLES } from "../types"
 
 
 export class PostBusiness {
     constructor(
         private postsDatabase: PostsDatabase,
         private idGenerator: IdGenerator,
-        private commentsDatabase: CommentsDatabase,
         private usersDatabase: UsersDatabase,
         private tokenManager: TokenManager
     ) { }
@@ -218,6 +216,8 @@ export class PostBusiness {
 
         const { id, token, like } = input
 
+        let message = "Like realizado com sucesso"
+
         if (token === undefined) {
             throw new BadRequestError("'token' ausente")
         }
@@ -272,19 +272,25 @@ export class PostBusiness {
             if (like) {
                 await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
                 post.removeLike()
+                message = "Like desfeito com sucesso"
+                
             } else {
                 await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
                 post.removeLike()
                 post.addDislike()
+                message = "Reação invertida com sucesso"
             }
         } else if (likeDislikeExist === POST_LIKE.ALREADY_DISLIKED) {
             if (like) {
                 await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
                 post.removeDislike()
                 post.addLike()
+                message = "Reação invertida com sucesso"
             } else {
                 await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
                 post.removeDislike()
+                message = "Dislike desfeito com sucesso"
+
             }
         } else {
 
@@ -298,8 +304,9 @@ export class PostBusiness {
 
         await this.postsDatabase.updatePostById(id, updatePostDB)
 
+
         return({
-            message: "Like ou Dislike realizado com sucesso"
+            message: message
         }
         )
     }

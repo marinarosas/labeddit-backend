@@ -1,19 +1,19 @@
 import { Request, Response } from "express"
 import { UserBusiness } from "../business/UserBusiness"
-import { LoginInputDTO, LoginOutputDTO, SignupInputDTO, SignupOutputDTO, UserDTO } from "../dtos/UserDTO"
+import { LoginOutputDTO, SignupOutputDTO, UserDTO } from "../dtos/UserDTO"
 import { BaseError } from "../errors/BaseError"
 
 export class UserController {
     constructor(
+        private userDTO: UserDTO,
         private userBusiness: UserBusiness
     ) { }
 
     public signup = async (req: Request, res: Response) => {
 
         try {
-            const userDTO = new UserDTO()
-
-            const input = userDTO.singupInput(
+        
+            const input = this.userDTO.singupInput(
                 req.body.nickname,
                 req.body.email,
                 req.body.password
@@ -34,9 +34,8 @@ export class UserController {
 
     public login = async (req: Request, res: Response) => {
         try {
-            const userDTO = new UserDTO()
-
-            const input = userDTO.loginInput(
+           
+            const input = this.userDTO.loginInput(
                 req.body.email,
                 req.body.password
             )

@@ -2,12 +2,12 @@ import { USER_ROLES } from "../../src/types";
 import { UserDB } from "../../src/types";
 import { BaseDatabase } from "../../src/database/BaseDatabase";
 
-export class UsersDatabaseMock extends BaseDatabase{
+export class UsersDatabaseMock extends BaseDatabase {
 
     public static TABLE_USERS = "users"
     public static TABLE_LIKESDISLIKES = "likes_dislikes"
 
-    public async getAllUsers(): Promise<UserDB[]>{
+    public async getAllUsers(): Promise<UserDB[]> {
         return [
             {
                 id: "id-mock",
@@ -30,19 +30,32 @@ export class UsersDatabaseMock extends BaseDatabase{
         ]
     }
 
-    public async getUserByName (q: string){
+    public async getUserByName(q: string) {
+        if (q === "Normal") {
+            return [
+                {
+                    id: "id-mock",
+                    nickname: "Normal Mock",
+                    email: "normal@email.com",
+                    password: "hash-brisa",
+                    role: USER_ROLES.NORMAL,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                }
+            ]
+        }
         return await BaseDatabase.connection(UsersDatabaseMock.TABLE_USERS).where("content", "LIKE", `%${q}%`)
     }
 
-    public async getUserById(id: string | undefined): Promise <UserDB | undefined>{
+    public async getUserById(id: string | undefined): Promise<UserDB | undefined> {
         const [userDBExist]: UserDB[] | undefined[] = await BaseDatabase
-        .connection(UsersDatabaseMock.TABLE_USERS)
-        .select()
-        .where({id})
+            .connection(UsersDatabaseMock.TABLE_USERS)
+            .select()
+            .where({ id })
         return userDBExist
     }
 
-    public async getUserByEmail(email: string | undefined): Promise <UserDB | undefined>{
+    public async getUserByEmail(email: string | undefined): Promise<UserDB | undefined> {
         switch (email) {
             case "normal@email.com":
                 return {
@@ -70,17 +83,17 @@ export class UsersDatabaseMock extends BaseDatabase{
         }
     }
 
-    public async insertUser(newUserDB: UserDB): Promise <void>{
-       //não precisa retornar nada porque é void
+    public async insertUser(newUserDB: UserDB): Promise<void> {
+        //não precisa retornar nada porque é void
     }
 
-    public async updateUserById(newUserDB: UserDB): Promise <void>{
-               //não precisa retornar nada porque é void
+    public async updateUserById(newUserDB: UserDB): Promise<void> {
+        //não precisa retornar nada porque é void
 
     }
 
-    public async deleteUser(id: string){
-               //não precisa retornar nada porque é void
+    public async deleteUser(id: string) {
+        //não precisa retornar nada porque é void
 
     }
 

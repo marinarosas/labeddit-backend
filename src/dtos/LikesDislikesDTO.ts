@@ -11,6 +11,7 @@ export interface LikesDislikesOutputDTO{
 }
 
 export class LikeDislikeDTO {
+    
     public likesDislikesPostInput(
         id: unknown,
         token: unknown,

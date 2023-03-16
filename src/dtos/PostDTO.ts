@@ -58,6 +58,20 @@ export interface DeletePostOutputDTO {
 
 export class PostDTO {
 
+    public getPostInput(
+        token: unknown
+    ): GetPostInputDTO{
+
+        if (typeof token !== "string") throw new BadRequestError("'token' deve ser string")
+
+        const dto: GetPostInputDTO = {
+            token
+        }
+
+    return dto
+
+    }
+
     public createPostInput(
         content: unknown,
         token: unknown

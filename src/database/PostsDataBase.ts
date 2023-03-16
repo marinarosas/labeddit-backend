@@ -64,26 +64,6 @@ export class PostsDatabase extends BaseDatabase {
         return result
     }
 
-    public findPostWithCreatorById = async (postId: string): Promise <PostWithCreatorDB | undefined> => {
-        const result: PostWithCreatorDB[] = await BaseDatabase
-            .connection(PostsDatabase.TABLE_POSTS)
-            .select(
-                "posts.id",
-                "posts.creator_id",
-                "posts.content",
-                "posts.likes",
-                "posts.dislikes",
-                "posts.created_at",
-                "posts.updated_at",
-                "users.nickname AS creator_nickname"
-
-            )
-            .join("users", "posts.creator_id", "=", "users.id")
-            .where("posts.id", postId)
-
-        return result[0]
-    }
-
     public likeOrDislikePost = async (likeDislike: LikeDislikePostDB): Promise <void> =>{
         await BaseDatabase
         .connection(PostsDatabase.TABLE_LIKES_DISLIKES)

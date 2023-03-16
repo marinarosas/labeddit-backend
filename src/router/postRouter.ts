@@ -4,12 +4,16 @@ import { PostController } from '../controller/PostController'
 import { CommentsDatabase } from '../database/CommentsDataBase'
 import { PostsDatabase } from '../database/PostsDataBase'
 import { UsersDatabase } from '../database/UsersDatabase'
+import { LikeDislikeDTO } from '../dtos/LikesDislikesDTO'
+import { PostDTO } from '../dtos/PostDTO'
 import { IdGenerator } from '../services/IdGenerator'
 import { TokenManager } from '../services/TokenManager'
 
 export const postRouter = express.Router()
 
 const postController = new PostController(
+    new PostDTO(),
+    new LikeDislikeDTO(),
     new PostBusiness(
         new PostsDatabase(),
         new IdGenerator(),

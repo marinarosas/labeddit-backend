@@ -44,50 +44,25 @@ export class CommentsDatabase extends BaseDatabase {
             .where({ id })
     }
 
-    // public getCommentWithCreator = async (): Promise<CommentWithCreatorDB[]> => {
-    //     const result: CommentWithCreatorDB[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_COMMENTS)
-    //         .select(
-    //             "comments.id",
-    //             "comments.post_id",
-    //             "comments.user_id",
-    //             "comments.content",
-    //             "comments.likes",
-    //             "comments.dislikes",
-    //             "comments.created_at",
-    //             "comments.updated_at",
-    //             "users.nickname AS creator_nickname"
-    //         )
-    //         .join("users", "comments.user_id", "=", "users.id")
+    public getCommentWithCreatorById = async (id: string): Promise <CommentWithCreatorDB[]> => {
+        const result: CommentWithCreatorDB[] = await BaseDatabase
+            .connection(CommentsDatabase.TABLE_COMMENTS)
+            .select(
+                "comments.id",
+                "comments.post_id",
+                "comments.user_id",
+                "comments.content",
+                "comments.likes",
+                "comments.dislikes",
+                "comments.created_at",
+                "comments.updated_at",
+                "users.nickname"
+            )
+            .innerJoin("users", "comments.user_id", "=", "users.id")
+            .where("comments.id", id)
 
-    //     return result
-    // }
-
-    // public getCommentWithPostId = async (postId: string): Promise<CommentModel[]> => {
-    //     const result: CommentModel[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_COMMENTS)
-    //         .innerJoin("users", "comments.user_id", "=", "users.id")
-    //         .select(
-    //             // "comments.id",
-    //             // "comments.post_id",
-    //             // "comments.content",
-    //             // "comments.likes",
-    //             // "comments.dislikes",
-    //             // "comments.created_at",
-    //             // "comments.updated_at",
-    //             // "comments.user_id",
-    //             // "users.nickname"
-    //             //"posts.id"
-    //         )
-    //         //.innerJoin("posts", "comments.post_id", "=", "posts.id")
-    //         // .select(
-    //         //     "posts.id"
-    //         // )
-    //         .where({post_id: postId})
-            
-
-    //     return result
-    // }
+        return result
+    }
 
     public likeOrDislikeComment = async (likeDislike: LikeDislikeCommentDB): Promise<void> => {
         await BaseDatabase
@@ -95,40 +70,40 @@ export class CommentsDatabase extends BaseDatabase {
             .insert(likeDislike)
     }
 
-    //     public findLikeDislike = async (likeDislikeToFind: LikeDislikeCommentDB): Promise <POST_LIKE | null> =>{
-    //         const [likeDislikeDB]: LikeDislikeCommentDB[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
-    //         .select()
-    //         .where({
-    //             user_id: likeDislikeToFind.user_id,
-    //             comment_id: likeDislikeToFind.comment_id
-    //         })
+        public getLikeDislike = async (likeDislikeToFind: LikeDislikeCommentDB): Promise <POST_LIKE | null> =>{
+            const [likeDislikeDB]: LikeDislikeCommentDB[] = await BaseDatabase
+            .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
+            .select()
+            .where({
+                user_id: likeDislikeToFind.user_id,
+                comment_id: likeDislikeToFind.comment_id
+            })
 
-    //         if(likeDislikeDB){
-    //             return likeDislikeDB.like === 1 ? POST_LIKE.ALREADY_LIKED : POST_LIKE.ALREADY_DISLIKED
-    //         }else{
-    //             return null
-    //         }
-    //     }    
+            if(likeDislikeDB){
+                return likeDislikeDB.like === 1 ? POST_LIKE.ALREADY_LIKED : POST_LIKE.ALREADY_DISLIKED
+            }else{
+                return null
+            }
+        }    
 
-    //     public removeLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise <void> =>{
-    //         await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
-    //         .delete()
-    //         .where({
-    //             user_id: likeDislikeDB.user_id,
-    //             comment_id: likeDislikeDB.comment_id
-    //         })
-    //     }
+        public removeLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise <void> =>{
+            await BaseDatabase
+            .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
+            .delete()
+            .where({
+                user_id: likeDislikeDB.user_id,
+                comment_id: likeDislikeDB.comment_id
+            })
+        }
 
-    //     public updateLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise <void> =>{
-    //         await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
-    //         .update(likeDislikeDB)
-    //         .where({
-    //             user_id: likeDislikeDB.user_id,
-    //             comment_id: likeDislikeDB.comment_id
-    //         })
-    //     }
+        public updateLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise <void> =>{
+            await BaseDatabase
+            .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
+            .update(likeDislikeDB)
+            .where({
+                user_id: likeDislikeDB.user_id,
+                comment_id: likeDislikeDB.comment_id
+            })
+        }
 
 }
