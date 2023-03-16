@@ -67,7 +67,8 @@ export interface CommentModel{
 
 export interface CommentWithCreatorDB {
     id:string,
-    creator_id: string,
+    post_id: string,
+    user_id: string,
     content: string,
     likes: number,
     dislikes: number,

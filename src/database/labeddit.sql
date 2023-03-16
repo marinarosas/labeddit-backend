@@ -37,8 +37,8 @@ VALUES
 
 CREATE TABLE comments(
     id PRIMARY KEY UNIQUE NOT NULL,
-    post_id UNIQUE NOT NULL,
-    user_id NOT NULL,
+    post_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
     content TEXT NOT NULL,
     likes INTEGER DEFAULT(0) NOT NULL,
     dislikes INTEGER DEFAULT(0) NOT NULL,

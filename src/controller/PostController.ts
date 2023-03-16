@@ -1,20 +1,23 @@
 import { Request, Response } from "express"
 import { PostBusiness } from "../business/PostBusiness"
-import { LikeDislikeDTO, LikesDislikesInputDTO } from "../dtos/LikesDislikesDTO"
-import { CreatePostInputDTO, DeletePostInputDTO, EditPostInputDTO, GetPostInputDTO, PostDTO } from "../dtos/PostDTO"
+import { LikeDislikeDTO } from "../dtos/LikesDislikesDTO"
+import {  PostDTO } from "../dtos/PostDTO"
 import { BaseError } from "../errors/BaseError"
 
 export class PostController {
     constructor(
+        private postDTO: PostDTO,
+        private likeDislikeDTO: LikeDislikeDTO,
         private postBusiness: PostBusiness
+        
     ) { }
 
     public getPosts = async (req: Request, res: Response) => {
         try {
 
-            const input: GetPostInputDTO = {
-                token: req.headers.authorization
-            }
+            const input = this.postDTO.getPostInput(
+                req.headers.authorization
+            )
 
            const output = await this.postBusiness.getPosts(input)
 
@@ -33,9 +36,7 @@ export class PostController {
     public createPost = async (req: Request, res: Response) => {
         try {
 
-            const postDTO = new PostDTO()
-
-            const input = postDTO.createPostInput(
+            const input = this.postDTO.createPostInput(
                 req.body.content,
                 req.headers.authorization
             )
@@ -57,9 +58,7 @@ export class PostController {
     public editPost = async (req: Request, res: Response) => {
         try {
 
-            const postDTO = new PostDTO()
-
-            const input = postDTO.editPostInput(
+            const input = this.postDTO.editPostInput(
                 req.params.id,
                 req.headers.authorization,
                 req.body.content
@@ -82,9 +81,7 @@ export class PostController {
     public deletePost = async (req: Request, res: Response) => {
         try {
 
-            const postDTO = new PostDTO()
-
-            const input = postDTO.deletePostInput(
+            const input = this.postDTO.deletePostInput(
                 req.params.id,
                 req.headers.authorization
             )
@@ -106,9 +103,7 @@ export class PostController {
     public likeOrDislikePost = async (req: Request, res: Response) => {
         try {
 
-            const likeDislikeDTO = new LikeDislikeDTO()
-
-            const input = likeDislikeDTO.likesDislikesPostInput(
+            const input = this.likeDislikeDTO.likesDislikesPostInput(
                 req.params.id,
                 req.headers.authorization,
                 req.body.like
