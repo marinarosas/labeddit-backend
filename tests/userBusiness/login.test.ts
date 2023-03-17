@@ -18,7 +18,7 @@ describe("Login", () => {
     test("testar login de um usuario NORMAL", async () =>{
         const input: LoginInputDTO = {
             email: "normal@email.com",
-            password: "brisa"
+            password: "Bris@1234"
         }
 
         const response: LoginOutputDTO = await userBusiness.login(input)
@@ -31,7 +31,7 @@ describe("Login", () => {
     test("testar login de um usuario ADMIN", async () =>{
         const input: LoginInputDTO = {
             email: "admin@email.com",
-            password: "brisa"
+            password: "Bris@1234"
         }
 
         const response: LoginOutputDTO = await userBusiness.login(input)
@@ -64,7 +64,7 @@ describe("Login", () => {
 
         const input: LoginInputDTO = {
             email: "normal1@email.com",
-            password: "brisa"
+            password: "Bris@1234"
         }
 
         expect(async () =>{
