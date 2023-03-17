@@ -14,19 +14,19 @@ export class PostsDatabaseMock extends BaseDatabase {
                 likes: 0,
                 dislikes: 0,
                 creator: {
-                    id: "id-mock2",
+                    id: "id-mock1",
                     nickname: "Normal Mock",
                 },
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             },
             {
-                id: "id-mock1",
+                id: "id-mock01",
                 content: "Feliz demais por essa semana! Muitas coisas por vir...",
                 likes: 0,
                 dislikes: 0,
                 creator: {
-                    id: "id-mock3",
+                    id: "id-mock2",
                     nickname: "Admin Mock",
                 },
                 createdAt: new Date().toISOString(),
