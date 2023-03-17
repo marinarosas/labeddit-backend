@@ -19,7 +19,7 @@ export class CommentsDatabaseMock extends BaseDatabase {
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 creator: {
-                    id: "id-mock2",
+                    id: "id-mock",
                     nickname: "Normal Mock",
                 }
             }
@@ -39,7 +39,7 @@ export class CommentsDatabaseMock extends BaseDatabase {
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     creator: {
-                        id: "id-mock2",
+                        id: "id-mock",
                         nickname: "Normal Mock",
                     }
                 }
@@ -59,7 +59,7 @@ export class CommentsDatabaseMock extends BaseDatabase {
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     creator: {
-                        id: "id-mock2",
+                        id: "id-mock",
                         nickname: "Normal Mock",
                     }
                 }

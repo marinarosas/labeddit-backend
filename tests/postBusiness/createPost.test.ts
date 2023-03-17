@@ -6,7 +6,7 @@ import { PostBusiness } from '../../src/business/PostBusiness'
 import { UsersDatabaseMock } from '../mocks/UsersDatabaseMock'
 import { BadRequestError } from '../../src/errors/BadRequestError'
 
-describe("Get Posts", ()=>{
+describe("Create Posts", ()=>{
     const postBusiness = new PostBusiness(
         new PostsDatabaseMock(),
         new IdGeneratorMock(),
@@ -14,29 +14,29 @@ describe("Get Posts", ()=>{
         new TokenManagerMock()
     )
 
-    // test("testando se o post é criado com sucesso", async()=>{
-    //     const input = {
-    //         content: "Vamos para praia?",
-    //         token: "token-mock-normal"
-    //     }
+    test("testando se o post é criado com sucesso", async()=>{
+        const input = {
+            content: "Vamos para praia?",
+            token: "token-mock-normal"
+        }
 
-    //     const response: CreatePostOutputDTO = await postBusiness.createPost(input)
+        const response: CreatePostOutputDTO = await postBusiness.createPost(input)
 
-    //     const output = {
-    //             id: "id-mock",
-    //             content: "Vamos para praia?",
-    //             likes: 0,
-    //             dislikes: 0,
-    //             creator: {
-    //                 id: "id-mock",
-    //                 nickname: "Normal Mock"
-    //             },
-    //             createdAt: expect.any(String),
-    //             updatedAt: expect.any(String) 
-    //     }
+        const output = {
+                id: "id-mock",
+                content: "Vamos para praia?",
+                likes: 0,
+                dislikes: 0,
+                creator: {
+                    id: "id-mock",
+                    nickname: "Normal Mock"
+                },
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String) 
+        }
 
-    //     expect(response).toBe(output)
-    // })
+        expect(response).toEqual(output)
+    })
 
     test("dispara o erro se o 'token' não é valido", async()=>{
         expect.assertions(2)
@@ -55,7 +55,7 @@ describe("Get Posts", ()=>{
         }).rejects.toBeInstanceOf(BadRequestError)
     })
 
-    test("dispara o erro se o 'token' não for informado", async()=>{
+    test("dispara o erro se o 'token' está ausente", async()=>{
         expect.assertions(2)
 
         const input: CreatePostInputDTO = {
@@ -72,20 +72,20 @@ describe("Get Posts", ()=>{
         }).rejects.toBeInstanceOf(BadRequestError)
     })
 
-    // test("dispara o erro se o 'token' não for informado", async()=>{
-    //     expect.assertions(2)
+    test("dispara o erro se o 'token' não for informado", async()=>{
+        expect.assertions(2)
 
-    //     const input: CreatePostInputDTO = {
-    //         content: "Vamos para a praia?",
-    //         token: null
-    //     }
+        const input: CreatePostInputDTO = {
+            content: "Vamos para a praia?",
+            token: null as any as string
+        }
 
-    //     expect(async () =>{
-    //         await postBusiness.createPost(input)
-    //     }).rejects.toThrow("'token' deve ser informado")
+        expect(async () =>{
+            await postBusiness.createPost(input)
+        }).rejects.toThrow("'token' deve ser informado")
 
-    //     expect(async ()=>{
-    //         await postBusiness.createPost(input)
-    //     }).rejects.toBeInstanceOf(BadRequestError)
-    // })
+        expect(async ()=>{
+            await postBusiness.createPost(input)
+        }).rejects.toBeInstanceOf(BadRequestError)
+    })
 })

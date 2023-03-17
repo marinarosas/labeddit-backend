@@ -7,7 +7,7 @@ import { UsersDatabaseMock } from '../mocks/UsersDatabaseMock'
 import { BadRequestError } from '../../src/errors/BadRequestError'
 import { NotFoundError } from '../../src/errors/NotFoundError'
 
-describe("Get Posts", ()=>{
+describe("Edit Posts", ()=>{
     const postBusiness = new PostBusiness(
         new PostsDatabaseMock(),
         new IdGeneratorMock(),
@@ -23,7 +23,7 @@ describe("Get Posts", ()=>{
     //     }
 
     //     const response: EditPostOutputDTO = await postBusiness.editPost(input)
-    //     expect(response.message).toBe("Post editado com sucesso")
+    //     expect(response.message).toEqual("Post editado com sucesso")
 
     // })
 
@@ -45,23 +45,23 @@ describe("Get Posts", ()=>{
         }).rejects.toBeInstanceOf(BadRequestError)
     })
 
-    // test("dispara o erro se o 'token' não for informado", async()=>{
-    //     expect.assertions(2)
+    test("dispara o erro se o 'token' não for informado", async()=>{
+        expect.assertions(2)
 
-    //     const input: EditPostInputDTO = {
-    //         idToEdit: "id-mock",
-    //         content: "Vamos para a praia?",
-    //         token: null
-    //     }
+        const input: EditPostInputDTO = {
+            idToEdit: "id-mock",
+            content: "Vamos para a praia?",
+            token: null as any as string
+        }
 
-    //     expect(async () =>{
-    //         await postBusiness.editPost(input)
-    //     }).rejects.toThrow("'token' deve ser informado")
+        expect(async () =>{
+            await postBusiness.editPost(input)
+        }).rejects.toThrow("'token' deve ser informado")
 
-    //     expect(async ()=>{
-    //         await postBusiness.editPost(input)
-    //     }).rejects.toBeInstanceOf(BadRequestError)
-    // })
+        expect(async ()=>{
+            await postBusiness.editPost(input)
+        }).rejects.toBeInstanceOf(BadRequestError)
+    })
 
     test("dispara o erro se o 'id' não encontrado", async()=>{
         expect.assertions(2)
@@ -99,22 +99,22 @@ describe("Get Posts", ()=>{
         }).rejects.toBeInstanceOf(BadRequestError)
     })
 
-    // test("dispara o erro somente quem criou o post pode editá-la", async()=>{
-    //     expect.assertions(2)
+    test("dispara o erro somente quem criou o post pode editá-la", async()=>{
+        expect.assertions(2)
 
-    //     const input: EditPostInputDTO = {
-    //         idToEdit: "id-mock01",
-    //         content: "Vamos para a praia?",
-    //         token: "token-mock-normal"
-    //     }
+        const input: EditPostInputDTO = {
+            idToEdit: "id-mock",
+            content: "Vamos para a praia?",
+            token: "token-mock-normal"
+        }
 
-    //     expect(async () =>{
-    //         await postBusiness.editPost(input)
-    //     }).rejects.toThrow("somente quem criou o post pode editá-la")
+        expect(async () =>{
+            await postBusiness.editPost(input)
+        }).rejects.toThrow("somente quem criou o post pode editá-la")
 
-    //     expect(async ()=>{
-    //         await postBusiness.editPost(input)
-    //     }).rejects.toBeInstanceOf(BadRequestError)
-    // })
+        expect(async ()=>{
+            await postBusiness.editPost(input)
+        }).rejects.toBeInstanceOf(BadRequestError)
+    })
 
 })

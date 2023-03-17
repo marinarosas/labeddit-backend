@@ -5,6 +5,7 @@ import { TokenManagerMock } from '../mocks/TokenManagerMock'
 import { PostBusiness } from '../../src/business/PostBusiness'
 import { UsersDatabaseMock } from '../mocks/UsersDatabaseMock'
 import { BadRequestError } from '../../src/errors/BadRequestError'
+import { NotFoundError } from '../../src/errors/NotFoundError'
 
 describe("Get Posts", ()=>{
     const postBusiness = new PostBusiness(
@@ -26,20 +27,20 @@ describe("Get Posts", ()=>{
     //             likes: 0,
     //             dislikes: 0,
     //             creator: {
-    //                 id: "id-mock1",
+    //                 id: "id-mock",
     //                 nickname: "Normal Mock",
     //             },
-    //             createdAt: new Date().toISOString(),
-    //             updatedAt: new Date().toISOString()
+    //             createdAt: expect.any(String),
+    //             updatedAt: expect.any(String)
     //         },
     //         {
-    //             id: "id-mock01",
+    //             id: "id-mock",
     //             content: "Feliz demais por essa semana! Muitas coisas por vir...",
     //             likes: 0,
     //             dislikes: 0,
     //             creator: {
-    //                 id: "id-mock2",
-    //                 nickname: "Admin Mock",
+    //                 id: "id-mock",
+    //                 nickname: "Normal Mock",
     //             },
     //             createdAt: expect.any(String),
     //             updatedAt: expect.any(String)
@@ -47,7 +48,7 @@ describe("Get Posts", ()=>{
     //     ]
 
     //     const response: CreatePostOutputDTO[] = await postBusiness.getPosts(input)
-    //     expect(response).toBe(output)
+    //     expect(response).toEqual(output)
 
     // })
 
@@ -87,7 +88,7 @@ describe("Get Posts", ()=>{
     //     expect.assertions(2)
 
     //     const input: GetPostInputDTO = {
-    //         token: "token-mock"
+    //         token: "token-mock-normala"
     //     }
 
     //     expect(async () =>{
@@ -96,7 +97,7 @@ describe("Get Posts", ()=>{
 
     //     expect(async ()=>{
     //         await postBusiness.getPosts(input)
-    //     }).rejects.toBeInstanceOf(BadRequestError)
+    //     }).rejects.toBeInstanceOf(NotFoundError)
     // })
 
 })

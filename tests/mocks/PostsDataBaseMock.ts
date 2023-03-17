@@ -14,19 +14,19 @@ export class PostsDatabaseMock extends BaseDatabase {
                 likes: 0,
                 dislikes: 0,
                 creator: {
-                    id: "id-mock1",
+                    id: "id-mock",
                     nickname: "Normal Mock",
                 },
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             },
             {
-                id: "id-mock01",
+                id: "id-mock",
                 content: "Feliz demais por essa semana! Muitas coisas por vir...",
                 likes: 0,
                 dislikes: 0,
                 creator: {
-                    id: "id-mock2",
+                    id: "id-mock",
                     nickname: "Admin Mock",
                 },
                 createdAt: new Date().toISOString(),
@@ -46,7 +46,7 @@ export class PostsDatabaseMock extends BaseDatabase {
                     likes: 0,
                     dislikes: 0,
                     creator: {
-                        id: "id-mock1",
+                        id: "id-mock",
                         nickname: "Normal Mock",
                     },
                     createdAt: new Date().toISOString(),
@@ -91,11 +91,11 @@ export class PostsDatabaseMock extends BaseDatabase {
 
     public getPostWithCreatorById = async (id: string): Promise<PostWithCreatorDB[]> => {
 
-        if(id === "id-mock3"){
+        if(id === "id-mock"){
             return [
                 {
-                    id: "id-mock1",
-                    creator_id: "id-mock3",
+                    id: "id-mock",
+                    creator_id: "id-mock",
                     content: "Feliz demais por essa semana! Muitas coisas por vir...",
                     likes: 0,
                     dislikes: 0,
