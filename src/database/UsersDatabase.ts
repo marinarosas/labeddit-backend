@@ -10,7 +10,7 @@ export class UsersDatabase extends BaseDatabase{
        return await BaseDatabase.connection(UsersDatabase.TABLE_USERS)
     }
 
-    public async getUserByName (q: string | undefined){
+    public async getUserByName (q: string | undefined): Promise <UserDB[] | undefined>{
         return await BaseDatabase.connection(UsersDatabase.TABLE_USERS).where("content", "LIKE", `%${q}%`)
     }
 
@@ -41,7 +41,7 @@ export class UsersDatabase extends BaseDatabase{
         .where({id: newUserDB.id})
     }
 
-    public async deleteUser(id: string){
+    public async deleteUser(id: string): Promise<void>{
         await BaseDatabase
         .connection(UsersDatabase.TABLE_LIKESDISLIKES)
         .del()

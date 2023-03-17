@@ -30,7 +30,7 @@ export class UsersDatabaseMock extends BaseDatabase {
         ]
     }
 
-    public async getUserByName(q: string) {
+    public async getUserByName(q: string): Promise <UserDB[] | undefined>{
         if (q === "Normal") {
             return [
                 {
@@ -44,15 +44,23 @@ export class UsersDatabaseMock extends BaseDatabase {
                 }
             ]
         }
-        return await BaseDatabase.connection(UsersDatabaseMock.TABLE_USERS).where("content", "LIKE", `%${q}%`)
     }
 
     public async getUserById(id: string | undefined): Promise<UserDB | undefined> {
-        const [userDBExist]: UserDB[] | undefined[] = await BaseDatabase
-            .connection(UsersDatabaseMock.TABLE_USERS)
-            .select()
-            .where({ id })
-        return userDBExist
+        if(id === "id-mock"){
+            return (
+                {
+                    id: "id-mock",
+                    nickname: "Normal Mock",
+                    email: "normal@email.com",
+                    password: "hash-brisa",
+                    role: USER_ROLES.NORMAL,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                })
+        } else{
+            return undefined
+        }
     }
 
     public async getUserByEmail(email: string | undefined): Promise<UserDB | undefined> {
@@ -92,7 +100,7 @@ export class UsersDatabaseMock extends BaseDatabase {
 
     }
 
-    public async deleteUser(id: string) {
+    public async deleteUser(id: string): Promise<void> {
         //não precisa retornar nada porque é void
 
     }

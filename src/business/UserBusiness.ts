@@ -22,7 +22,7 @@ export class UserBusiness {
         const { nickname, email, password } = input
 
         if(nickname.length < 2){
-            throw new BadRequestError("Email deve possuir pelo menos 2")
+            throw new BadRequestError("'nickname' deve possuir pelo menos 2 caracteres")
         }
 
         if(password.length < 8){
