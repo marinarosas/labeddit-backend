@@ -89,7 +89,7 @@ Para ter uma copia local, siga os passos abaixo:
  JWT(Token),
  Bcrypt,
  Jest,
- developer:
+ developer tools:
 
   ```sh
   npm install
