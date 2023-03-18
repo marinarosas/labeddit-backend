@@ -274,7 +274,7 @@ Endpoint protegido, requer um token jwt para acessá-lo.
 [
     {
        id: "ef894ae1-17f4-8900-9f54-165af46f66e6",
-       postId: "db704ae1-18c8-4895-9f54-165af46f66e6"
+       postId: "db704ae1-18c8-4895-9f54-165af46f66e6",
        content: "Feliz demais!!",
        likes: 0,
        dislikes: 0,
