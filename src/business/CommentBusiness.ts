@@ -37,17 +37,24 @@ export class CommentBusiness {
             throw new BadRequestError("'token'inválido")
         }
 
-        const commentsDB: CommentDB[] = await this.commentsDatabase.getAllComment()
+        const postFind = await this.postsDatabase.getPostById(postId)
 
-        //const posts: PostDB[] = await this.postsDatabase.getAllPosts()
+        if(postFind === undefined){
+            throw new BadRequestError("'postId' não encontrado")
+        }
+
+
+        const commentsDB: CommentDB[] = await this.commentsDatabase.getAllComment()
+        const [commentPostId]: CommentDB[] = await this.commentsDatabase.getAllComment()
+
+        if(postFind.id !== commentPostId.post_id){
+            throw new BadRequestError("'postId' não tem comentário")
+        }
+
         const users = await this.usersDatabase.getAllUsers()
 
         const comments = commentsDB.map((commentDB) => {
             const userFind = users.find((user)=>user.id === commentDB.user_id)
-            //const postFind = posts.find((posts)=>posts.id === commentDB.post_id)
-            // if(!postFind){
-            //     throw new BadRequestError ("Post não encontrado")
-            // }
 
             if(userFind === undefined){
                 throw new BadRequestError("'userFind' não existe")
@@ -222,7 +229,7 @@ export class CommentBusiness {
         await this.postsDatabase.deletePostById(idToDelete)
 
         return ({
-            message: "Comment deletado com sucesso"
+            message: "Comentário deletado com sucesso"
         })
 
     }
@@ -311,7 +318,7 @@ export class CommentBusiness {
         await this.commentsDatabase.updateCommentById(id, updatePostDB)
 
         return({
-            message: "Like ou Dislike realizado com sucesso"
+            message: "Reação realizada com sucesso"
         }
         )
     }

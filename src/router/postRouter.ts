@@ -1,7 +1,6 @@
 import express from 'express'
 import { PostBusiness } from '../business/PostBusiness'
 import { PostController } from '../controller/PostController'
-import { CommentsDatabase } from '../database/CommentsDataBase'
 import { PostsDatabase } from '../database/PostsDataBase'
 import { UsersDatabase } from '../database/UsersDatabase'
 import { LikeDislikeDTO } from '../dtos/LikesDislikesDTO'
@@ -17,7 +16,6 @@ const postController = new PostController(
     new PostBusiness(
         new PostsDatabase(),
         new IdGenerator(),
-        new CommentsDatabase(),
         new UsersDatabase(),
         new TokenManager()
     )

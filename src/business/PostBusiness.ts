@@ -199,7 +199,7 @@ export class PostBusiness {
         const creatorId = payload.id
 
         if (
-            payload.role !== USER_ROLES.ADMIN &&
+            payload.role !== USER_ROLES.ADMIN ||
             postDB.creator_id !== creatorId) {
             throw new BadRequestError("somente quem criou o post pode deletá-la")
         }
@@ -215,8 +215,6 @@ export class PostBusiness {
     public likeOrDislikePost = async (input: LikesDislikesInputDTO): Promise<LikesDislikesOutputDTO> => {
 
         const { id, token, like } = input
-
-        let message = "Like realizado com sucesso"
 
         if (token === undefined) {
             throw new BadRequestError("'token' ausente")
@@ -271,26 +269,20 @@ export class PostBusiness {
 
             if (like) {
                 await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
-                post.removeLike()
-                message = "Like desfeito com sucesso"
-                
+                post.removeLike()                
             } else {
                 await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
                 post.removeLike()
                 post.addDislike()
-                message = "Reação invertida com sucesso"
             }
         } else if (likeDislikeExist === POST_LIKE.ALREADY_DISLIKED) {
             if (like) {
                 await this.postsDatabase.updateLikeDislike(likeDislikePostDB)
                 post.removeDislike()
                 post.addLike()
-                message = "Reação invertida com sucesso"
             } else {
                 await this.postsDatabase.removeLikeDislike(likeDislikePostDB)
                 post.removeDislike()
-                message = "Dislike desfeito com sucesso"
-
             }
         } else {
 
@@ -306,7 +298,7 @@ export class PostBusiness {
 
 
         return({
-            message: message
+            message: "Reação realizada com sucesso"
         }
         )
     }

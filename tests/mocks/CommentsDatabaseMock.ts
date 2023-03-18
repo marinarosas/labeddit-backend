@@ -1,4 +1,4 @@
-import { LikeDislikeCommentDB, CommentDB, CommentWithCreatorDB, POST_LIKE, CommentModel } from "../types";
+import { LikeDislikeCommentDB, CommentDB, CommentWithCreatorDB, POST_LIKE, CommentModel } from "../../src/types";
 import { BaseDatabase } from "../../src/database/BaseDatabase";
 
 export class CommentsDatabaseMock extends BaseDatabase {
@@ -19,7 +19,7 @@ export class CommentsDatabaseMock extends BaseDatabase {
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 creator: {
-                    id: "id-mock2",
+                    id: "id-mock",
                     nickname: "Normal Mock",
                 }
             }
@@ -39,7 +39,7 @@ export class CommentsDatabaseMock extends BaseDatabase {
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     creator: {
-                        id: "id-mock2",
+                        id: "id-mock",
                         nickname: "Normal Mock",
                     }
                 }
@@ -47,8 +47,8 @@ export class CommentsDatabaseMock extends BaseDatabase {
         }
     }
 
-    public async getCommentById(id: string | undefined): Promise<CommentDB | undefined> {
-        if (id === "id=mock") {
+    public async getCommentById(id: string | undefined): Promise<CommentModel[] | undefined> {
+        if (id === "id-mock") {
             return [
                 {
                     id: "id-mock",
@@ -59,7 +59,7 @@ export class CommentsDatabaseMock extends BaseDatabase {
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     creator: {
-                        id: "id-mock2",
+                        id: "id-mock",
                         nickname: "Normal Mock",
                     }
                 }
@@ -79,89 +79,37 @@ export class CommentsDatabaseMock extends BaseDatabase {
         //não precisa retornar nada porque é void
     }
 
-    // public getCommentWithCreator = async (): Promise<CommentWithCreatorDB[]> => {
-    //     const result: CommentWithCreatorDB[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_COMMENTS)
-    //         .select(
-    //             "comments.id",
-    //             "comments.post_id",
-    //             "comments.user_id",
-    //             "comments.content",
-    //             "comments.likes",
-    //             "comments.dislikes",
-    //             "comments.created_at",
-    //             "comments.updated_at",
-    //             "users.nickname AS creator_nickname"
-    //         )
-    //         .join("users", "comments.user_id", "=", "users.id")
+    public getCommentWithCreatorById = async (id: string): Promise <CommentWithCreatorDB[] | undefined> => {
 
-    //     return result
-    // }
-
-    // public getCommentWithPostId = async (postId: string): Promise<CommentModel[]> => {
-    //     const result: CommentModel[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_COMMENTS)
-    //         .innerJoin("users", "comments.user_id", "=", "users.id")
-    //         .select(
-    //             // "comments.id",
-    //             // "comments.post_id",
-    //             // "comments.content",
-    //             // "comments.likes",
-    //             // "comments.dislikes",
-    //             // "comments.created_at",
-    //             // "comments.updated_at",
-    //             // "comments.user_id",
-    //             // "users.nickname"
-    //             //"posts.id"
-    //         )
-    //         //.innerJoin("posts", "comments.post_id", "=", "posts.id")
-    //         // .select(
-    //         //     "posts.id"
-    //         // )
-    //         .where({post_id: postId})
-
-
-    //     return result
-    // }
+        if(id === "id-mock"){
+            return [{
+             id: "id-mock",
+             post_id: "p001",
+             user_id: "id-mock",
+             content: "Que praia? To dentro!",
+             likes: 0,
+             dislikes: 0,
+             created_at: expect.any(String),
+             updated_at: expect.any(String),
+             creator_nickname: "Normal Mock"
+         }]
+        }
+    }
 
     public likeOrDislikeComment = async (likeDislike: LikeDislikeCommentDB): Promise<void> => {
         //não precisa retornar nada porque é void
     }
 
-    //     public findLikeDislike = async (likeDislikeToFind: LikeDislikeCommentDB): Promise <POST_LIKE | null> =>{
-    //         const [likeDislikeDB]: LikeDislikeCommentDB[] = await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
-    //         .select()
-    //         .where({
-    //             user_id: likeDislikeToFind.user_id,
-    //             comment_id: likeDislikeToFind.comment_id
-    //         })
+    public getLikeDislike = async (likeDislikeToFind: LikeDislikeCommentDB): Promise<POST_LIKE | null> => {
+        return null
+    }
 
-    //         if(likeDislikeDB){
-    //             return likeDislikeDB.like === 1 ? POST_LIKE.ALREADY_LIKED : POST_LIKE.ALREADY_DISLIKED
-    //         }else{
-    //             return null
-    //         }
-    //     }    
+    public removeLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise<void> => {
+        //não precisa retornar nada porque é void
+    }
 
-    //     public removeLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise <void> =>{
-    //         await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
-    //         .delete()
-    //         .where({
-    //             user_id: likeDislikeDB.user_id,
-    //             comment_id: likeDislikeDB.comment_id
-    //         })
-    //     }
-
-    //     public updateLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise <void> =>{
-    //         await BaseDatabase
-    //         .connection(CommentsDatabase.TABLE_LIKES_DISLIKES_COMMENTS)
-    //         .update(likeDislikeDB)
-    //         .where({
-    //             user_id: likeDislikeDB.user_id,
-    //             comment_id: likeDislikeDB.comment_id
-    //         })
-    //     }
+    public updateLikeDislike = async (likeDislikeDB: LikeDislikeCommentDB): Promise<void> => {
+        //não precisa retornar nada porque é void
+    }
 
 }

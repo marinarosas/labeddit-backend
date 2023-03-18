@@ -30,8 +30,8 @@ export type GetCommentOutputDTO = CommentModel[]
 
 export interface EditCommentInputDTO {
     idToEdit: string,
+    token: string | undefined,
     content: string,
-    token: string | undefined
 }
 
 export interface EditCommentOutputDTO {

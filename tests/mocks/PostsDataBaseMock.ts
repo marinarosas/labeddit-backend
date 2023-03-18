@@ -14,19 +14,19 @@ export class PostsDatabaseMock extends BaseDatabase {
                 likes: 0,
                 dislikes: 0,
                 creator: {
-                    id: "id-mock2",
+                    id: "id-mock",
                     nickname: "Normal Mock",
                 },
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             },
             {
-                id: "id-mock1",
+                id: "id-mock",
                 content: "Feliz demais por essa semana! Muitas coisas por vir...",
                 likes: 0,
                 dislikes: 0,
                 creator: {
-                    id: "id-mock3",
+                    id: "id-mock",
                     nickname: "Admin Mock",
                 },
                 createdAt: new Date().toISOString(),
@@ -46,7 +46,7 @@ export class PostsDatabaseMock extends BaseDatabase {
                     likes: 0,
                     dislikes: 0,
                     creator: {
-                        id: "id-mock1",
+                        id: "id-mock",
                         nickname: "Normal Mock",
                     },
                     createdAt: new Date().toISOString(),
@@ -62,7 +62,7 @@ export class PostsDatabaseMock extends BaseDatabase {
             return (
                 {
                     id: "id-mock",
-                    creator_id: "id-mock2",
+                    creator_id: "id-mock",
                     content: "Que dia mais lindo! Calor, sol e mar...",
                     likes: 0,
                     dislikes: 0,
@@ -77,25 +77,51 @@ export class PostsDatabaseMock extends BaseDatabase {
     }
 
     public async insertPost(newPostDB: PostDB): Promise<void> {
-        //não precisa retornar nada porque é void
+        newPostDB = {
+            id: "id-mock",
+            creator_id: "id-mock",
+            content: "Vamos pra praia?",
+            likes: 0,
+            dislikes: 0,
+            comments: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        }
+       
+    return 
 
     }
 
     public async updatePostById(id: string, newPostDB: PostDB): Promise<void> {
-        //não precisa retornar nada porque é void
+        if(id === "id-mock"){
+            newPostDB = {
+                id: "id-mock",
+                creator_id: "id-mock",
+                content: "Vamos pra praia?",
+                likes: 0,
+                dislikes: 0,
+                comments: 0,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            }
+        }
+
+        return
     }
 
     public async deletePostById(id: string): Promise<void> {
-        //não precisa retornar nada porque é void
+        if(id === "id-mock"){
+            return
+        }
     }
 
     public getPostWithCreatorById = async (id: string): Promise<PostWithCreatorDB[]> => {
 
-        if(id === "id-mock3"){
+        if (id === "id-mock") {
             return [
                 {
-                    id: "id-mock1",
-                    creator_id: "id-mock3",
+                    id: "id-mock",
+                    creator_id: "id-mock",
                     content: "Feliz demais por essa semana! Muitas coisas por vir...",
                     likes: 0,
                     dislikes: 0,
@@ -110,21 +136,45 @@ export class PostsDatabaseMock extends BaseDatabase {
     }
 
     public likeOrDislikePost = async (likeDislike: LikeDislikePostDB): Promise<void> => {
-        //não precisa retornar nada porque é void
+        likeDislike = {
+            post_id: "p001",
+            user_id: "id-mock",
+            like: 1
+        }
+
+        return
 
     }
 
     public getLikeDislike = async (likeDislikeToFind: LikeDislikePostDB): Promise<POST_LIKE | null> => {
-       return POST_LIKE.ALREADY_LIKED
+        likeDislikeToFind = {
+            post_id: "p001",
+            user_id: "id-mock",
+            like: 0
+        }
+        
+        return null
+
     }
 
     public removeLikeDislike = async (likeDislikeDB: LikeDislikePostDB): Promise<void> => {
-        //não precisa retornar nada porque é void
-
+        likeDislikeDB = {
+            post_id: "p001",
+            user_id: "id-mock",
+            like: 0
+        }
+        
+        return 
     }
 
     public updateLikeDislike = async (likeDislikeDB: LikeDislikePostDB): Promise<void> => {
-        //não precisa retornar nada porque é void
+        likeDislikeDB = {
+            post_id: "p001",
+            user_id: "id-mock",
+            like: 0
+        }
+        
+        return 
 
     }
 

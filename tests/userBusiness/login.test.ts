@@ -40,23 +40,6 @@ describe("Login", () => {
 
         expect(response.token).toBe(token)
     })
-    
-    // test("deve disparar erro caso o email não seja um string", () =>{
-    //     expect.assertions(2)
-
-    //     const input: LoginInputDTO = {
-    //         email: 87686,
-    //         password: "brisa"
-    //     }
-
-    //     expect(async () =>{
-    //         await userBusiness.login(input)
-    //     }).rejects.toThrow("'email' deve ser string")
-
-    //     expect(async () =>{
-    //         await userBusiness.login(input)
-    //     }).rejects.toBeInstanceOf(BadRequestError)
-    // })
 
     test("dipara erro caso o e-mail esteja incorreto", () =>{
 
