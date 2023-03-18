@@ -20,6 +20,8 @@ describe("Get Posts", ()=>{
     //         token: "token-mock-normal"
     //     }
 
+    //     const response: CreatePostOutputDTO[] = await postBusiness.getPosts(input)
+
     //     const output = [
     //         {
     //             id: "id-mock",
@@ -47,7 +49,6 @@ describe("Get Posts", ()=>{
     //         }
     //     ]
 
-    //     const response: CreatePostOutputDTO[] = await postBusiness.getPosts(input)
     //     expect(response).toEqual(output)
 
     // })

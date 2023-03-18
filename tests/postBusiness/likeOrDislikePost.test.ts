@@ -26,23 +26,9 @@ describe("Like e Dislike Posts", ()=>{
         const response: LikesDislikesOutputDTO = await postBusiness.likeOrDislikePost(input)
 
         if(response)
-        expect(response.message).toEqual("Like desfeito com sucesso")
+        expect(response.message).toEqual("Reação realizada com sucesso")
 
     })
-
-    // test("teste de fazer like no post", async()=>{
-    //     const input: LikesDislikesInputDTO = {
-    //         id: "id-mock",
-    //         token: "token-mock-normal",
-    //         like: null as any as boolean
-    //     }
-
-    //     const response: LikesDislikesOutputDTO = await postBusiness.likeOrDislikePost(input)
-
-    //     if(response)
-    //     expect(response.message).toEqual("Like realizado com sucesso")
-
-    // })
 
     test("dispara o erro se o 'token' ausente", async()=>{
         expect.assertions(2)

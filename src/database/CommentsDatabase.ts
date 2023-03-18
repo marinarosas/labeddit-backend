@@ -24,6 +24,8 @@ export class CommentsDatabase extends BaseDatabase {
         return commentDBExist
     }
 
+    
+
     public async insertComment(newCommentDB: CommentDB): Promise<void> {
         await BaseDatabase.connection(CommentsDatabase.TABLE_COMMENTS).insert(newCommentDB)
 

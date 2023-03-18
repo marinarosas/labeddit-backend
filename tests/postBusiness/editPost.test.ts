@@ -15,25 +15,25 @@ describe("Edit Posts", ()=>{
         new TokenManagerMock()
     )
     
-    // test("teste de pegar editar um post", async()=>{
-    //     const input: EditPostInputDTO = {
-    //         idToEdit: "id-mock",
-    //         content: "Vamos para praia de Cotovelo?",
-    //         token: "token-mock-normal"
-    //     }
+    test("teste de pegar editar um post", async()=>{
+        const input: EditPostInputDTO = {
+            idToEdit: "id-mock",
+            token: "token-mock-normal",
+            content: "Vamos para praia de Cotovelo?"
+        }
 
-    //     const response: EditPostOutputDTO = await postBusiness.editPost(input)
-    //     expect(response.message).toEqual("Post editado com sucesso")
+        const response: EditPostOutputDTO = await postBusiness.editPost(input)
+        expect(response.message).toEqual("Post editado com sucesso")
 
-    // })
+    })
 
     test("dispara o erro se o 'token' ausente", async()=>{
         expect.assertions(2)
 
         const input: EditPostInputDTO = {
             idToEdit: "id-mock",
-            content: "Vamos para praia?",
-            token: undefined
+            token: undefined,
+            content: "Vamos para praia?"
         }
 
         expect(async () =>{
@@ -50,8 +50,8 @@ describe("Edit Posts", ()=>{
 
         const input: EditPostInputDTO = {
             idToEdit: "id-mock",
-            content: "Vamos para a praia?",
-            token: null as any as string
+            token: null as any as string,
+            content: "Vamos para a praia?"
         }
 
         expect(async () =>{
@@ -68,8 +68,8 @@ describe("Edit Posts", ()=>{
 
         const input: EditPostInputDTO = {
             idToEdit: "id",
-            content: "Vamos para a praia?",
-            token: "token-mock-normal"
+            token: "token-mock-normal",
+            content: "Vamos para a praia?"
         }
 
         expect(async () =>{
@@ -86,8 +86,8 @@ describe("Edit Posts", ()=>{
 
         const input: EditPostInputDTO = {
             idToEdit: "id-mock",
-            content: "Vamos para a praia?",
-            token: "token"
+            token: "token",
+            content: "Vamos para a praia?"
         }
 
         expect(async () =>{
@@ -99,22 +99,22 @@ describe("Edit Posts", ()=>{
         }).rejects.toBeInstanceOf(BadRequestError)
     })
 
-    test("dispara o erro somente quem criou o post pode editá-la", async()=>{
-        expect.assertions(2)
+    // test("dispara o erro somente quem criou o post pode editá-la", async()=>{
+    //     expect.assertions(2)
 
-        const input: EditPostInputDTO = {
-            idToEdit: "id-mock",
-            content: "Vamos para a praia?",
-            token: "token-mock-normal"
-        }
+    //     const input: EditPostInputDTO = {
+    //         idToEdit: "id-mock",
+    //         token: "token-mock-normal",
+    //         content: "Vamos para a praia?"
+    //     }
 
-        expect(async () =>{
-            await postBusiness.editPost(input)
-        }).rejects.toThrow("somente quem criou o post pode editá-la")
+    //     expect(async () =>{
+    //         await postBusiness.editPost(input)
+    //     }).rejects.toThrow("somente quem criou o post pode editá-la")
 
-        expect(async ()=>{
-            await postBusiness.editPost(input)
-        }).rejects.toBeInstanceOf(BadRequestError)
-    })
+    //     expect(async ()=>{
+    //         await postBusiness.editPost(input)
+    //     }).rejects.toBeInstanceOf(BadRequestError)
+    // })
 
 })

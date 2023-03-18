@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { CommentBusiness } from "../business/CommentBusiness"
 import { LikeDislikeDTO } from "../dtos/LikesDislikesDTO"
-import { CommentDTO } from "../dtos/CommentDTO"
+import { CommentDTO, DeleteCommentInputDTO } from "../dtos/CommentDTO"
 import { BaseError } from "../errors/BaseError"
 
 export class CommentController {
@@ -86,9 +86,9 @@ export class CommentController {
                 req.headers.authorization
             )
 
-            await this.commentBusiness.deleteComment(input)
+            const output = await this.commentBusiness.deleteComment(input)
 
-            res.status(200).end()
+            res.status(200).send(output)
 
         } catch (error) {
             console.log(error)

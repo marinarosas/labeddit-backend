@@ -1,4 +1,4 @@
-import { CreatePostOutputDTO, DeletePostInputDTO, EditPostInputDTO, EditPostOutputDTO, GetPostInputDTO } from '../../src/dtos/PostDTO'
+import { DeletePostInputDTO, EditPostOutputDTO } from '../../src/dtos/PostDTO'
 import { PostsDatabaseMock } from '../mocks/PostsDatabaseMock'
 import { IdGeneratorMock } from '../mocks/IdGeneratorMock'
 import { TokenManagerMock } from '../mocks/TokenManagerMock'
