@@ -33,7 +33,7 @@ Links do deploy e repositório do bando de dados da aplicação Labeddit.<br>
 
 Links do deploy e repositório do front da aplicação Labeddit.<br>
 
-[Labeddit Deploy Frontend](labeddit-iota.vercel.app)<br>
+[Labeddit Deploy Frontend](https://labeddit-iota.vercel.app/)<br>
 [Labeddit Repo Frontend](https://github.com/marinajaudy/labeddit-frontend.git)
 
 
