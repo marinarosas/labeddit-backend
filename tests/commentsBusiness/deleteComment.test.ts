@@ -27,7 +27,7 @@ describe("Get Posts", () => {
 
     //     const response: DeleteCommentOutputDTO = await postBusiness.deleteComment(input)
 
-    //     expect(response.message).toEqual("Comment deletado com sucesso")
+    //     expect(response.message).toEqual("Comentário deletado com sucesso")
 
     // })
 

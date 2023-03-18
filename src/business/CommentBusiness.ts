@@ -229,7 +229,7 @@ export class CommentBusiness {
         await this.postsDatabase.deletePostById(idToDelete)
 
         return ({
-            message: "Comment deletado com sucesso"
+            message: "Comentário deletado com sucesso"
         })
 
     }
