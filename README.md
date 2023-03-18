@@ -287,7 +287,7 @@ Endpoint protegido, requer um token jwt para acessá-lo.
     },
     {
         id: "uma uuid v4",
-       postId: "uma uuid v4"
+       postId: "uma uuid v4",
        content: "jhdlkjhdkljhdk!!",
        likes: 0,
        dislikes: 0,
